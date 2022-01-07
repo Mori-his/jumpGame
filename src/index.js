@@ -1,4 +1,5 @@
 import GameStartPanel from './model/startPanel';
+import State from './controls/gameState'
 
 const maxWidth = 375;
 const maxHeight = 812;
@@ -10,4 +11,12 @@ stage.canvas.height = Math.min(window.innerHeight, maxHeight)
 createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
 createjs.Ticker.framerate = 60;
 createjs.Ticker.addEventListener('tick', stage);
-new GameStartPanel(stage)
+const gameStartPanel = new GameStartPanel(stage);
+
+
+gameStartPanel.on('start', () => {
+    State.playing = true;
+    // 开始游戏
+})
+
+
