@@ -9,11 +9,8 @@ class HomeBackground extends createjs.Bitmap {
         super(imageOrUrl);
         this.x = x || 0;
         this.y = y || 0;
-
-        this.scaleX = 0.5;
-        this.scaleY = 0.5;
-        this.imageWidget = this.image.width * 0.5;
-        this.imageHeight = this.image.height * 0.5;
+        this.imageWidget = this.image.width;
+        this.imageHeight = this.image.height;
     }
 }
 
@@ -21,14 +18,19 @@ export default class GameStartPanel {
     sources = [
         {
             id: 'mainPng',
-            src: require('/src/assets/images/main.png').default,
+            src: require('/src/assets/images/start_background.jpg').default,
             type: createjs.Types.IMAGE
         },
         {
             id: 'dkPng',
-            src: require('/src/assets/images/start_button.png').default,
+            src: require('/src/assets/images/start_btn.png').default,
             type: createjs.Types.IMAGE
         },
+        {
+            id: 'dkPng',
+            src: require('/src/assets/images/start_btn.png').default,
+            type: createjs.Types.IMAGE
+        }
     ]
     constructor(stage) {
         this.stage = stage;
@@ -41,9 +43,8 @@ export default class GameStartPanel {
             imageOrUrl: loader.getResult('mainPng')
         });
         this.startBtn = new createjs.Bitmap(loader.getResult('dkPng'));
-        this.startBtn.scale = 0.5
-        this.startBtn.x = (this.homeBG.imageWidget - this.startBtn.image.width * 0.5) / 2;
-        this.startBtn.y = this.homeBG.imageHeight - this.startBtn.image.height * 0.5;
+        this.startBtn.x = (this.homeBG.imageWidget - this.startBtn.image.width) / 2;
+        this.startBtn.y = this.homeBG.imageHeight - this.startBtn.image.height - 49;
         this.container.addChild(
             this.homeBG,
             this.startBtn
