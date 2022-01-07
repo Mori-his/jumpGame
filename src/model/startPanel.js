@@ -54,6 +54,7 @@ export default class GameStartPanel extends EventEmitter {
         this.stage = stage;
         this.container = new createjs.Container();
         this.loadSource();
+        console.log(this)
     }
 
     sourceComplete(event, loader) {
@@ -79,22 +80,22 @@ export default class GameStartPanel extends EventEmitter {
         this.startTips1.x = (canvasRect.width - this.startTips1.image.width) / 2;
         this.startTips2.x = (canvasRect.width - this.startTips2.image.width) / 2;
         this.startTips1.y = canvasRect.height - this.startTips1.image.height - 155;
-        this.startTips2.y = canvasRect.height - this.startTips1.image.height - 125;
+        this.startTips2.y = canvasRect.height - this.startTips1.image.height - 121;
 
         this.startBtn = new createjs.Bitmap(loader.getResult('startBtn'));
         this.startBtn.x = (canvasRect.width - this.startBtn.image.width) / 2;
         this.startBtn.y = canvasRect.height - this.startBtn.image.height - 49;
-        this.startBtn.addEventListener('click', function() {
+        this.startBtn.addEventListener('click', () => {
             this.emit('start', this);
         });
 
         this.iceRole = new createjs.Bitmap(loader.getResult('iceRole'));
         this.iceRole.x = 20;
-        this.iceRole.y = canvasRect.height - this.iceRole.image.height - 180;
+        this.iceRole.y = canvasRect.height - this.iceRole.image.height - 199;
 
         this.snowRole = new createjs.Bitmap(loader.getResult('snowRole'))
-        this.snowRole.x = (canvasRect.width - this.snowRole.image.width) / 2 + 70;
-        this.snowRole.y = canvasRect.height - this.snowRole.image.height - 210;
+        this.snowRole.x = (canvasRect.width - this.snowRole.image.width) / 2 + 77;
+        this.snowRole.y = canvasRect.height - this.snowRole.image.height - 228;
 
         this.container.addChild(
             this.homeBG,

@@ -1,5 +1,7 @@
 import GameStartPanel from './model/startPanel';
 import State from './controls/gameState'
+import GameLoading from './model/gameLoding';
+import GamePlay from './model/gamePlay';
 
 const maxWidth = 375;
 const maxHeight = 812;
@@ -17,6 +19,18 @@ const gameStartPanel = new GameStartPanel(stage);
 gameStartPanel.on('start', () => {
     State.playing = true;
     // 开始游戏
+    const gameLoading = new GameLoading(stage);
+    let gamePlay;
+    gameLoading.on('loaded', () => {
+        gamePlay = new GamePlay(stage);
+        gamePlay.on('loadProgress', (percentage) => {
+            gameLoading.toProgress(percentage);
+        });
+    });
+
+    gameLoading.on('play', () => {
+        console.log('play');
+    });
 })
 
 
