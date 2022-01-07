@@ -1,5 +1,5 @@
 import GameStartPanel from './model/startPanel';
 
 
-console.log(new GameStartPanel);
-console.log(createjs)
+const stage = new createjs.Stage('mainCanvas');
+new GameStartPanel(stage)

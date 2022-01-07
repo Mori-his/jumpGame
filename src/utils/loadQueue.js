@@ -1,19 +1,16 @@
 
 
 
-function loadFiles(files, callback) {
+export function loadFiles(files, callback = () => {}) {
     const isMp3 = /\.mp3$/;
-    const queue = new createjs.LoadQueue()
+    const queue = new createjs.LoadQueue(true)
     queue.installPlugin(createjs.Sound);
-    queue.on("complete", callback, this);
+    queue.addEventListener("complete", (event) => {
+        callback(event, queue);
+    });
     if (Array.isArray(files)) {
-        files.forEach(item => {
-            if (isMp3.test(item.src)) {
-                queue.loadFile(item)
-            } else {
-                queue.loadManifest(item)
-            }
+        files.forEach(file => {
+            queue.loadFile(file, true)
         })
-
     }
 }
