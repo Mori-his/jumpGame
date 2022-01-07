@@ -1,0 +1,23 @@
+{
+  "name": "jump_game",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "repository": "git@github.com:Mori-his/jumpGame.git",
+  "author": "zhangshushuang-hj <zhangshushuang-hj@huajiao.tv>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@types/createjs": "^0.0.29",
+    "babel-loader": "^8.2.3",
+    "copy-webpack-plugin": "^10.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.2"
+  }
+}
