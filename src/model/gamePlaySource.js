@@ -6,6 +6,21 @@ export default [
         type: createjs.Types.IMAGE
     },
     {
+        id: 'fixedTopBg',
+        src: require('/src/assets/images/gamePlay/fixed_top_bg.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'rollBg',
+        src: require('/src/assets/images/gamePlay/roll_bg.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'tree',
+        src: require('/src/assets/images/gamePlay/tree.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
         id: 'woods',
         src: require('/src/assets/images/woods.png').default,
         type: createjs.Types.IMAGE

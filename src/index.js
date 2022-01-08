@@ -3,6 +3,7 @@ import State from './controls/gameState'
 import GameLoading from './model/gameLoding';
 import GamePlay from './model/gamePlay';
 import { GameScore } from './model/gameScore';
+import WeightsAlgorithm from './model/weightsAlgorithm';
 
 
 window.addEventListener('load', function() {
@@ -38,6 +39,12 @@ window.addEventListener('load', function() {
                 loader: gamePlay.loader,
             })
             gamePlay.run();
+            const weightMatrix = new WeightsAlgorithm(stage, {
+                row: 5,
+                column: 3,
+                loader: gamePlay.loader
+            });
+            console.log(weightMatrix);
             // gameScore.render();
         });
     })

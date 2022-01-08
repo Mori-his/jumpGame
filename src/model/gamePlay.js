@@ -28,11 +28,35 @@ export default class GamePlay extends EventEmitter {
     }
 
     renderBackground(loader) {
-        this.background = new createjs.Bitmap(loader.getResult('background'));
-        this.background.x = 0;
-        this.background.y = 0;
-        this.background.regY = this.background.image.height - this.stage.canvas.height;
-        this.container.addChild(this.background);
+        const fixedTopBg = new createjs.Bitmap(loader.getResult('fixedTopBg'));
+        fixedTopBg.x = 0;
+        fixedTopBg.y = 0;
+
+        this.rollContainer = new createjs.Container();
+
+        this.rollBg = new createjs.Bitmap(loader.getResult('rollBg'));
+        this.rollTree = new createjs.Bitmap(loader.getResult('tree'));
+        this.rollBg.x = 0;
+        this.rollTree.x = 0;
+        this.rollBg.y = 0;
+        this.rollTree.y = 0;
+        this.rollContainer.regY = this.rollBg.image.height - this.stage.canvas.height;
+        this.rollTree.regX = 25;
+
+
+        this.rollContainer.addChild(
+            this.rollBg,
+            this.rollTree
+        );
+
+        // this.background = new createjs.Bitmap(loader.getResult('background'));
+        // this.background.x = 0;
+        // this.background.y = 0;
+        // this.background.regY = this.background.image.height - this.stage.canvas.height;
+        this.container.addChild(
+            this.rollContainer,
+            fixedTopBg,
+        );
     }
 
     renderDistance(loader) {
@@ -252,7 +276,7 @@ export default class GamePlay extends EventEmitter {
     }
 
     moveBackground(regY = 0) {
-        createjs.Tween.get(this.background, { override: true })
+        createjs.Tween.get(this.rollContainer, { override: true })
             .to({
                 regY,
             }, 30000, createjs.Ease.linear);
