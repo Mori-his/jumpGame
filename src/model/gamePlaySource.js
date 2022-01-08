@@ -16,6 +16,16 @@ export default [
         type: createjs.Types.IMAGE
     },
     {
+        id: 'guideLogo',
+        src: require('/src/assets/images/gamePlay/guide_logo.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'guideText',
+        src: require('/src/assets/images/gamePlay/guide_text.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
         id: 'hand',
         src: require('/src/assets/images/hand.png').default,
         type: createjs.Types.IMAGE
@@ -198,6 +208,86 @@ export default [
     {
         id: 'batter_num_9',
         src: require('/src/assets/images/gamePlay/batter/9.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_0',
+        src: require('/src/assets/images/gamePlay/countdown/0.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_1',
+        src: require('/src/assets/images/gamePlay/countdown/1.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_2',
+        src: require('/src/assets/images/gamePlay/countdown/2.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_3',
+        src: require('/src/assets/images/gamePlay/countdown/3.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_4',
+        src: require('/src/assets/images/gamePlay/countdown/4.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_5',
+        src: require('/src/assets/images/gamePlay/countdown/5.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_6',
+        src: require('/src/assets/images/gamePlay/countdown/6.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_7',
+        src: require('/src/assets/images/gamePlay/countdown/7.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_8',
+        src: require('/src/assets/images/gamePlay/countdown/8.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'countdown_9',
+        src: require('/src/assets/images/gamePlay/countdown/9.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'scorePanel',
+        src: require('/src/assets/images/gameOverScore/score_panel.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'btnRestart',
+        src: require('/src/assets/images/gameOverScore/btn_restart.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'btnShare',
+        src: require('/src/assets/images/gameOverScore/btn_share.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'light',
+        src: require('/src/assets/images/gameOverScore/light.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'overQuotes1',
+        src: require('/src/assets/images/gameOverScore/over_quotes_1.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'overQuotes2',
+        src: require('/src/assets/images/gameOverScore/over_quotes_2.png').default,
         type: createjs.Types.IMAGE
     },
 ]

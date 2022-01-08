@@ -6,7 +6,9 @@ import source from './gamePlaySource';
 const font = 'PingFangSC-Medium,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Source Han Sans", "Noto Sans CJK Sc", "Microsoft YaHei", "Microsoft Jhenghei", sans-serif'
 export default class GamePlay extends EventEmitter {
     source = source;
-    currTime = 0
+    currTime = 0;
+    currDistance = 0;
+    currBatterNum = 0;
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
@@ -51,7 +53,13 @@ export default class GamePlay extends EventEmitter {
         this.disanceText = new createjs.Text(
             '米',
             `bold 18px ${font}`,
-            '#fff').set({x: 110, y: 57.5});
+            '#fff');
+        const { height: textHeihgt } = this.disanceText.getBounds();
+        const { h } = this.distanceBg.graphics.command;
+        this.disanceText.set({
+            x: 110,
+            y: this.distanceBg.y + (h - textHeihgt) / 2
+        });
 
         const batterBg = new createjs.Bitmap(loader.getResult('overtime_bg'));
         batterBg.x = this.stage.canvas.width - batterBg.image.width - 18;
@@ -66,6 +74,11 @@ export default class GamePlay extends EventEmitter {
                 new createjs.Bitmap(batterImage).set({x: currBatterNumLeft, y: 58})
             );
         }
+        
+        const batterAddIcon = new createjs.Text('+', `bold 18px ${font}`, '#004786');
+        batterAddIcon.outline = 1;
+        batterAddIcon.x = batterBg.x + 15;
+        batterAddIcon.y = batterBg.y + 14;
 
         this.volumeOpen = new createjs.Bitmap(loader.getResult('volume_open'));
         this.volumeClose = new createjs.Bitmap(loader.getResult('volume_close'));
@@ -74,36 +87,38 @@ export default class GamePlay extends EventEmitter {
         this.volumeOpen.y = 89;
         this.volumeClose.y = 89;
 
+        this.volumeOpen.addEventListener('click', () => {
+            this.distanceContainer.addChild(this.volumeClose);
+            this.distanceContainer.removeChild(this.volumeOpen);
+        });
+        this.volumeClose.addEventListener('click', () => {
+            this.distanceContainer.addChild(this.volumeOpen);
+            this.distanceContainer.removeChild(this.volumeClose);
+        });
+
 
         const countdownBg = new createjs.Bitmap(loader.getResult('countdown_bg'));
         countdownBg.x = 5;
         countdownBg.y = this.stage.canvas.height - countdownBg.image.height - 53;
         this.countdownNums = [];
-        const countdownNumImage = loader.getResult('distance_0');
-        const countdownNumLeft = countdownBg.x + 28;
+        const countdownNumImage = loader.getResult('countdown_0');
+        const countdownNumLeft = countdownBg.x + 25;
         for(let i = 0; i < 2; i++) {
             const currCountdownBgNumLeft = countdownNumLeft + i * (countdownNumImage.width + 2);
             this.countdownNums.push(
                 new createjs.Bitmap(countdownNumImage).set({x: currCountdownBgNumLeft, y: countdownBg.y + 62})
             );
         }
+        this.setCountdownNum();
 
 
         const progressBg = new createjs.Bitmap(loader.getResult('progress_bg'));
         progressBg.x = (this.stage.canvas.width - progressBg.image.width) / 2;
         progressBg.y = this.stage.canvas.height - progressBg.image.height - 22;
 
-        // this.progress = new createjs.Bitmap(loader.getResult('progress'))
-        //     .set({x: progressBg.x + 4, y: progressBg.y + 5, scaleX: 1});
-        this.progressBox = new createjs.Shape().set({x: progressBg.x + 4, y: progressBg.y + 5, scaleX: 1});
-        this.progressBox.graphics.beginFill('#fff')
-            .drawRoundRect(
-                0,
-                0,
-                progressBg.image.width - 8,
-                progressBg.image.height - 10,
-                progressBg.image.height / 2.5
-            );
+        this.progress = new createjs.Bitmap(loader.getResult('progress'))
+            .set({x: progressBg.x + 4, y: progressBg.y + 5});
+        this.progress.sourceRect = new createjs.Rectangle(0,0, this.progress.image.width, this.progress.image.height);
 
         this.distanceContainer.addChild(
             this.distanceBg,
@@ -115,7 +130,8 @@ export default class GamePlay extends EventEmitter {
             countdownBg,
             ...this.countdownNums,
             progressBg,
-            this.progressBox
+            this.progress,
+            batterAddIcon
         );
     }
 
@@ -156,8 +172,23 @@ export default class GamePlay extends EventEmitter {
         hand.x = (this.stage.canvas.width - hand.image.width) / 2;
         hand.y = (this.stage.canvas.height - arrowLeft.image.height) - 200;
 
-    
+            
+        const guideLogo = new createjs.Bitmap(loader.getResult('guideLogo'));
+        const guideText = new createjs.Bitmap(loader.getResult('guideText'));
+        guideLogo.x = (this.stage.canvas.width - guideLogo.image.width) / 2;
+        guideLogo.y = hand.y - guideLogo.image.height - 30;
+        guideText.x = (this.stage.canvas.width - guideText.image.width) / 2;
+        guideText.y = hand.y + guideText.image.height + 13;
         this.tipsContainer.addEventListener('click', this.handleTipsClick.bind(this))
+        
+        createjs.Tween.get(arrowLeft, { loop: true })
+            .to({x: arrowLeft.x - 10}, 300, createjs.Ease.linear)
+            .to({x: arrowLeft.x}, 300, createjs.Ease.quadInOut)
+            .wait(300);
+        createjs.Tween.get(arrowRight, { loop: true })
+            .wait(300)
+            .to({x: arrowRight.x + 10}, 300, createjs.Ease.linear)
+            .to({x: arrowRight.x}, 300, createjs.Ease.quadInOut);
 
         this.tipsContainer.addChild(
             backgroundAlpha,
@@ -168,6 +199,8 @@ export default class GamePlay extends EventEmitter {
             arrowLeft,
             arrowRight,
             hand,
+            guideLogo,
+            guideText
         );
     }
 
@@ -198,28 +231,47 @@ export default class GamePlay extends EventEmitter {
         }, 1000);
     }
 
-    setCountdownNum() {
-        console.log(this.countdownNums);
+    computedDistance() {
+        const nums = this.currDistance.toString().padStart(4, '0').split('');
+        this.distanceNums.forEach((num, index) => {
+            num.image = this.loader.getResult(`distance_${nums[index]}`)
+        });
+    }
+    computedBatterNum() {
+        const nums = this.currBatterNum.toString().padStart(3, '0').split('');
+        this.batterNums.forEach((num, index) => {
+            num.image = this.loader.getResult(`batter_num_${nums[index]}`)
+        });
     }
 
-    moveBackground() {
+    setCountdownNum() {
+        const nums = this.currTime.toString().padStart(2, '0').split('');
+        this.countdownNums.forEach((num, index) => {
+            num.image = this.loader.getResult(`countdown_${nums[index]}`)
+        });
+    }
 
+    moveBackground(regY = 0) {
         createjs.Tween.get(this.background, { override: true })
             .to({
-                regY: 0
-            }, 30000, createjs.Ease.quadInOut).call(() => {
-                this.gameOver();
-            })
+                regY,
+            }, 30000, createjs.Ease.linear);
     }
     moveProgress(scaleX) {
-        const time = Math.abs(this.progressBox.scaleX - scaleX) * 1000;
-        console.log(time);
-        createjs.Tween.get(this.progressBox, { override: true })
+        const sourceRect = this.progress.sourceRect;
+        const totalWidth = this.progress.image.width;
+        const width = scaleX * totalWidth;
+        createjs.Tween.get(sourceRect, { override: true })
             .to({
-                scaleX: scaleX,
-            }, 1000, createjs.Ease.linear);
+                width,
+            }, 1000, createjs.Ease.linear).call(() => {
+                if (width <= 0) {
+                    this.gameOver();
+                }
+            });
     }
     gameOver() {
+        console.log('游戏结束了')
         gameState.gameOver();
     }
 
@@ -248,6 +300,10 @@ export default class GamePlay extends EventEmitter {
 
     destory() {
         this.tipsContainer.removeAllEventListeners('click');
+        this.volumeClose.removeAllEventListeners('click');
+        this.volumeOpen.removeAllEventListeners('click');
+        this.removeAllListeners('loadProgress');
+        this.removeAllListeners('tipsClick');
         this.stage.removeChild(
             this.tipsContainer,
             this.container

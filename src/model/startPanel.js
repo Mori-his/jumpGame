@@ -70,7 +70,6 @@ export default class GameStartPanel extends EventEmitter {
             height: this.homeBG.image.height,
         }, canvasRect);
 
-        
         this.homeBG.scaleX = scale.scaleX;
         this.homeBG.scaleY = scale.scaleY;
 

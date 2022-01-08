@@ -40,6 +40,8 @@ export default class GameLoading extends EventEmitter {
             this.stage.canvas.width,
             this.stage.canvas.height,
         )
+        // 防止点透
+        this.backgroundAlpha.addEventListener('click', () => {})
 
         this.loadingBg = new createjs.Shape();
         const loadingBgWidth = 262;
@@ -56,6 +58,7 @@ export default class GameLoading extends EventEmitter {
                 loadingBgHeight,
                 progressRadius
             );
+        this.loadingBg.shadow = new createjs.Shadow('rgba(8, 6, 185, 0.4)', 0, 0, 5);
         const progressLeft = (this.stage.canvas.width - loadingBgWidth) / 2 + 2;
         const progressTop = 383;
         this.progressBox = new createjs.Shape().set({x: progressLeft, y: progressTop, scaleX: 0});
@@ -99,19 +102,19 @@ export default class GameLoading extends EventEmitter {
 
     toProgress(percentage) {
         const totalWidth = this.loadingBg.graphics.command.w;
-        const scaleX = percentage / 100
+        const scaleX = percentage / 100;
         const progressWidth = scaleX * totalWidth;
         createjs.Tween.get(this.progressBox, { override: true })
             .to({
                 scaleX: scaleX
-            }, 500, createjs.Ease.quadIn).call(() => {
-                if (scaleX >= 1) {
+            }, 500, createjs.Ease.quadIn).wait(200).call(() => {
+                if (scaleX >= 1 && progressWidth >= totalWidth) {
                     this.emit('play');
                 }
-            })
+            });
         createjs.Tween.get(this.progressCableCar, { override: true })
             .to({
-                x: this.progressCableCar.x + progressWidth
+                x: progressWidth + this.progressCableCar.image.width
             }, 500, createjs.Ease.quadIn);
     }
 
@@ -126,6 +129,7 @@ export default class GameLoading extends EventEmitter {
         this.stage.removeChild(this.container)
         this.removeAllListeners('play');
         this.removeAllListeners('loaded');
+        this.backgroundAlpha.removeAllEventListeners('click')
     }
 }
 
