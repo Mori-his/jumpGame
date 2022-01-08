@@ -23,6 +23,7 @@ export default class GameLoading extends EventEmitter {
             src: require('/src/assets/images/trumpet.png').default,
             type: createjs.Types.IMAGE
         },
+        
     ]
     constructor(stage) {
         super();
@@ -100,7 +101,6 @@ export default class GameLoading extends EventEmitter {
         const totalWidth = this.loadingBg.graphics.command.w;
         const scaleX = percentage / 100
         const progressWidth = scaleX * totalWidth;
-        console.log(percentage)
         createjs.Tween.get(this.progressBox, { override: true })
             .to({
                 scaleX: scaleX
@@ -120,6 +120,12 @@ export default class GameLoading extends EventEmitter {
             this.source,
             this.sourceComplete.bind(this)
         );
+    }
+
+    destory() {
+        this.stage.removeChild(this.container)
+        this.removeAllListeners('play');
+        this.removeAllListeners('loaded');
     }
 }
 

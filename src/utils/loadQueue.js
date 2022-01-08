@@ -7,13 +7,8 @@ export function loadFiles(files, callback = () => {}, progress = () => {}) {
     queue.addEventListener('complete', (event) => {
         callback(event, queue);
     });
-    let loadedCount = 1;
-    queue.addEventListener('progress', function() {
-        // TODO
-        // 进度条计算
-        progress(loadedCount * 10);
-        console.log(loadedCount, files.length)
-        ++loadedCount;
+    queue.addEventListener('progress', function(event) {
+        progress(event.loaded * 100);
     })
     if (Array.isArray(files)) {
         files.forEach(file => {

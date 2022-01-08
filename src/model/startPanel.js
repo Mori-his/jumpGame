@@ -54,7 +54,6 @@ export default class GameStartPanel extends EventEmitter {
         this.stage = stage;
         this.container = new createjs.Container();
         this.loadSource();
-        console.log(this)
     }
 
     sourceComplete(event, loader) {
@@ -131,6 +130,11 @@ export default class GameStartPanel extends EventEmitter {
 
     loadSource() {
         this.loader = loadFiles(this.source, this.sourceComplete.bind(this));
+    }
+
+    destory() {
+        this.stage.removeChild(this.container)
+        this.removeAllListeners('start');
     }
 
 }

@@ -2,8 +2,10 @@
 class GameState {
     playing = false;
 
-    constructor() {
+    gameOver() {
+        this.playing = false;
 
+        
     }
 }
 

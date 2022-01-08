@@ -23,13 +23,15 @@ gameStartPanel.on('start', () => {
     let gamePlay;
     gameLoading.on('loaded', () => {
         gamePlay = new GamePlay(stage);
-        gamePlay.on('loadProgress', (percentage) => {
+        gamePlay.on('loadProgress', (context, percentage) => {
             gameLoading.toProgress(percentage);
         });
     });
 
     gameLoading.on('play', () => {
-        console.log('play');
+        gameStartPanel.destory();
+        gameLoading.destory();
+        gamePlay.run();
     });
 })
 
