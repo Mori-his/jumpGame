@@ -40,11 +40,17 @@ window.addEventListener('load', function() {
             })
             gamePlay.run();
             const weightMatrix = new WeightsAlgorithm(stage, {
-                row: 5,
-                column: 3,
+                row: 10,
+                column: 5,
                 loader: gamePlay.loader
             });
-            console.log(weightMatrix);
+            console.log(weightMatrix.generate());
+            console.log(weightMatrix.generate());
+            console.log(weightMatrix.generate());
+            console.log(weightMatrix.generate());
+            console.log(weightMatrix.generate());
+            console.log(weightMatrix.generate());
+            console.log(weightMatrix.generate());
             // gameScore.render();
         });
     })

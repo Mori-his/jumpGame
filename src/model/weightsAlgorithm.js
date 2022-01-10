@@ -6,6 +6,9 @@ export default class WeightsAlgorithm {
 
     colors = []
 
+    stepWeight = 5;
+    maxWeight = 100;
+
     constructor(stage, {row, column, loader}) {
         this.stage = stage;
         this.row = row;
@@ -16,6 +19,7 @@ export default class WeightsAlgorithm {
     }
 
     initMatrix() {
+        this.matrix = [];
         const { row, column, matrix } = this;
         for(let r = 0; r < row; r++) {
             let col = [];
@@ -38,17 +42,51 @@ export default class WeightsAlgorithm {
         const jumpGreen = new createjs.Bitmap(loader.getResult('jump_green'));
         const jumpYellow = new createjs.Bitmap(loader.getResult('jump_yellow'));
         this.colors = [
-            { widget: 100, rise: false, bitmap: jumpBlue },
-            { widget: 100, rise: false, bitmap: jumpRed },
-            { widget: 100, rise: false, bitmap: jumpGreen },
-            { widget: 100, rise: false, bitmap: jumpYellow },
+            { weight: this.maxWeight, rise: false, bitmap: jumpBlue },
+            { weight: this.maxWeight, rise: false, bitmap: jumpRed },
+            { weight: this.maxWeight, rise: false, bitmap: jumpGreen },
+            { weight: this.maxWeight, rise: false, bitmap: jumpYellow },
         ]
     }
-
-
-    random() {
-        Math.random()
+    setOptions(options = {}) {
+        if (options.row !== this.row || options.column !== this.row) {
+            this.row = options.row || this.row;
+            this.column = options.column || this.column;
+            this.initMatrix();
+        }
     }
+    generate(options) {
+        this.setOptions(options);
+        this.matrix.forEach(row => {
+            row.forEach(column => {
+                const random = this.random();
+                let currColor = this.colors[random];
+                if (currColor) {
+                    const currWeight = currColor.weight / this.maxWeight;
+                    const index = Math.round(random * currWeight);
+                    currColor = this.colors[index];
+                    column.bitmap = currColor.bitmap;
+                    column.index = index;
+                    this.handleWeight(currColor);
+                }
+            });
+        });
+        return JSON.parse(JSON.stringify(this.matrix));
+    }
+    handleWeight(color) {
+        if (color.weight === 100) {
+            color.rise = false;
+        } else if (color.weight <= this.stepWeight) {
+            color.rise = true;
+        }
 
-
+        if (color.rise) {
+            color.weight += this.stepWeight;
+        } else {
+            color.weight -= this.stepWeight;
+        }
+    }
+    random() {
+        return Math.round(Math.random() * this.colors.length + 1);
+    }
 }
