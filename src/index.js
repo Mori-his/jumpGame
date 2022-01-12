@@ -39,18 +39,6 @@ window.addEventListener('load', function() {
                 loader: gamePlay.loader,
             })
             gamePlay.run();
-            const weightMatrix = new WeightsAlgorithm(stage, {
-                row: 10,
-                column: 5,
-                loader: gamePlay.loader
-            });
-            console.log(weightMatrix.generate());
-            console.log(weightMatrix.generate());
-            console.log(weightMatrix.generate());
-            console.log(weightMatrix.generate());
-            console.log(weightMatrix.generate());
-            console.log(weightMatrix.generate());
-            console.log(weightMatrix.generate());
             // gameScore.render();
         });
     })

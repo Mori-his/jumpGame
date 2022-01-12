@@ -13,7 +13,6 @@ export default class WeightsAlgorithm {
         this.stage = stage;
         this.row = row;
         this.column = column;
-        this.loader = loader;
         this.initColors();
         this.initMatrix();
     }
@@ -25,8 +24,6 @@ export default class WeightsAlgorithm {
             let col = [];
             for(let c = 0; c < column; c++) {
                 col.push({
-                    x: 0,
-                    y: 0,
                     bitmap: null
                 });
             }
@@ -36,11 +33,10 @@ export default class WeightsAlgorithm {
 
 
     initColors() {
-        const { loader } = this;
-        const jumpRed = new createjs.Bitmap(loader.getResult('jump_red'));
-        const jumpBlue = new createjs.Bitmap(loader.getResult('jump_blue'));
-        const jumpGreen = new createjs.Bitmap(loader.getResult('jump_green'));
-        const jumpYellow = new createjs.Bitmap(loader.getResult('jump_yellow'));
+        const jumpRed = 'jump_red';
+        const jumpBlue = 'jump_blue';
+        const jumpGreen = 'jump_green';
+        const jumpYellow = 'jump_yellow';
         this.colors = [
             { weight: this.maxWeight, rise: false, bitmap: jumpBlue },
             { weight: this.maxWeight, rise: false, bitmap: jumpRed },
@@ -57,7 +53,7 @@ export default class WeightsAlgorithm {
     }
     generate(options) {
         this.setOptions(options);
-        this.matrix.forEach(row => {
+        this.matrix.forEach((row, index) => {
             row.forEach(column => {
                 const random = this.random();
                 let currColor = this.colors[random];
@@ -70,6 +66,9 @@ export default class WeightsAlgorithm {
                     this.handleWeight(currColor);
                 }
             });
+            row.forEach(column => {
+
+            })
         });
         return JSON.parse(JSON.stringify(this.matrix));
     }
@@ -87,6 +86,6 @@ export default class WeightsAlgorithm {
         }
     }
     random() {
-        return Math.round(Math.random() * this.colors.length + 1);
+        return Math.round(Math.random() * this.colors.length + 2);
     }
 }

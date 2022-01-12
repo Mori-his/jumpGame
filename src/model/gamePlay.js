@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import gameState from "../controls/gameState";
 import { loadFiles } from "../utils/loadQueue";
 import source from './gamePlaySource';
+import WeightsAlgorithm from "./weightsAlgorithm";
 
 const font = 'PingFangSC-Medium,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Source Han Sans", "Noto Sans CJK Sc", "Microsoft YaHei", "Microsoft Jhenghei", sans-serif'
 export default class GamePlay extends EventEmitter {
@@ -9,28 +10,57 @@ export default class GamePlay extends EventEmitter {
     currTime = 0;
     currDistance = 0;
     currBatterNum = 0;
+    row = 0;
+    col = 0;
+    renderRow = 1;
+    renderCol = 1;
+    padding = 100;
+    rollCount = 1;
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
-        this.time = options.time || 30;
+        this.time = options.time || 90;
         this.currTime = this.time;
         this.container = new createjs.Container();
+        this.moveContainer = new createjs.Container();
+        this.backgroundContainer = new createjs.Container();
+        this.jumpContainer = new createjs.Container();
         this.loadSource();
     }
 
     sourceComplete(event, loader) {
+        this.weightAlgorithm = new WeightsAlgorithm(this.stage, {
+            row: this.row,
+            column: this.col
+        });
+        // 增加背景以及跳台容器
         this.renderBackground(loader);
+        // 渲染倒计时
         this.renderDistance(loader);
-
-
-
+        // 渲染游戏人物
+        this.renderRole(loader);
+        // 渲染初始化时的新手提示
         this.renderTips(loader);
     }
 
+    /**
+     * 渲染人物角色
+     */
+    renderRole(loader) {
+        this.role = new createjs.Bitmap(loader.getResult('roleMaleRight'));
+        this.role.y = this.rollBg.image.height - this.role.image.height;
+        this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
+        this.jumpRoleX = this.role.x;
+        this.jumpRoleY = this.role.y;
+        this.role.scale = 0.7
+        this.jumpContainer.addChild(this.role);
+        this.stage.update();
+    }
+
     renderBackground(loader) {
-        const fixedTopBg = new createjs.Bitmap(loader.getResult('fixedTopBg'));
-        fixedTopBg.x = 0;
-        fixedTopBg.y = 0;
+        this.fixedTopBg = new createjs.Bitmap(loader.getResult('fixedTopBg'));
+        this.fixedTopBg.x = 0;
+        this.fixedTopBg.y = 0;
 
         this.rollContainer = new createjs.Container();
 
@@ -40,22 +70,29 @@ export default class GamePlay extends EventEmitter {
         this.rollTree.x = 0;
         this.rollBg.y = 0;
         this.rollTree.y = 0;
-        this.rollContainer.regY = this.rollBg.image.height - this.stage.canvas.height;
+        this.rollContainer.y = -(this.rollBg.image.height - this.stage.canvas.height);
         this.rollTree.regX = 25;
+        
 
+        this.computedGrid();
+        this.renderJump(this.rollBg.image.height - this.renderHeight);
 
+        this.backgroundContainer.addChild(this.rollBg);
+
+        // 绘制背景以及跳台容器
         this.rollContainer.addChild(
-            this.rollBg,
-            this.rollTree
+            this.backgroundContainer,
+            this.jumpContainer
         );
-
-        // this.background = new createjs.Bitmap(loader.getResult('background'));
-        // this.background.x = 0;
-        // this.background.y = 0;
-        // this.background.regY = this.background.image.height - this.stage.canvas.height;
-        this.container.addChild(
+        
+        // 给滚动容器合固定容器组合
+        this.moveContainer.addChild(
             this.rollContainer,
-            fixedTopBg,
+            this.fixedTopBg,
+        );
+        // 放置到总容器里
+        this.container.addChild(
+            this.moveContainer,
         );
     }
 
@@ -235,14 +272,126 @@ export default class GamePlay extends EventEmitter {
         );
         this.showTips()
         this.stage.update()
+        window.test = this
     }
 
     start() {
         if (!gameState.playing) return
-        this.moveBackground();
+        // this.moveBackground();
         this.countdown();
+        this.jumpRole(
+            this.jumpRoleX,
+           (this.jumpRoleY - this.renderHeight * 3.3),
+        )
     }
 
+    jumpRole(
+        x = 0,
+        y = 0,
+        time = 800
+    ) {
+        this.jumpRoleX = x;
+        this.jumpRoleY = y;
+        createjs.Tween.get(this.role, { override: true })
+            .to({
+                y,
+                x
+            }, time, createjs.Ease.quadOut).call(() => {
+                this.fallingRole(this.jumpRoleX, this.rollBg.image.height);
+            });
+
+    }
+    fallingRole(
+        x = 0,
+        y = 0,
+        time = 1100
+    ) {
+        this.jumpRoleX = x;
+        this.jumpRoleY = y;
+        const fallTween = createjs.Tween.get(this.role, { override: true })
+            .to({
+                y,
+                x
+            }, time, createjs.Ease.quadIn)
+        fallTween.addEventListener('change', () => {
+            const originY = -(this.rollBg.image.height - this.stage.canvas.height);
+            const moveY = this.rollContainer.y;
+
+            const leftX = this.role.x;
+            const leftY = this.role.y;
+            const points = [
+                new createjs.Point(leftX, leftY),
+                new createjs.Point(leftX + this.role.image.width / 2, leftY),
+                new createjs.Point(leftX , leftY + this.role.image.height / 2),
+                new createjs.Point(leftX + this.role.image.width / 2, leftY + this.role.image.height / 2),
+            ]
+            for(let i = 0; i < points.length; i++) {
+                let objects = this.jumpContainer.getObjectsUnderPoint(points[i].x, points[i].y);
+                objects = objects.filter((object) => object.name == 'jump')
+                if (objects.length > 0) {
+                    createjs.Tween.get(objects[0]).to({
+                        x: 0
+                    }, 5000, createjs.Ease.linear)
+                    console.log(objects[0])
+                    this.jumpRole(
+                        this.role.x,
+                        this.role.y - this.renderHeight * 3.3 
+                    );
+                    this.moveBackground(this.rollContainer.y + this.renderHeight * 3.3, 800)
+
+                    // fallTween.setPaused(true);
+                }
+            }
+
+        });
+    }
+
+    /**
+     * 渲染跳台
+     */
+    renderJump(startY) {
+        const matrix = this.weightAlgorithm.generate({
+            row: this.row,
+            column: this.col
+        });
+        for(let r = 0; r < matrix.length; r++) {
+            const col = matrix[r];
+            this.renderCol = 0;
+            let startX = this.padding / 2;
+            for (let c = 0; c < col.length; c++) {
+                const currBitmap = new createjs.Bitmap(this.loader.getResult(col[c].bitmap));
+                if (currBitmap) {
+                    currBitmap.x = startX;
+                    currBitmap.y = startY;
+                    currBitmap.name = 'jump';
+                    currBitmap['@@name'] = col[c].bitmap;
+                    this.jumpContainer.addChild(currBitmap);
+                    this.jumpContainer.setChildIndex(0);
+                }
+                startX += this.renderWidth;
+                this.renderCol++;
+            }
+            startY -= this.renderHeight;
+            this.renderRow++;
+        }
+    }
+
+    renderDepthJump() {
+        const cloneRollBg = this.rollBg.clone()
+        cloneRollBg.x = 0;
+        cloneRollBg.y = -(this.rollBg.image.height * this.rollCount);
+        this.backgroundContainer.addChild(
+            cloneRollBg
+        );
+        const jumpY = -(this.rollBg.image.height * (this.rollCount - 1) + this.renderHeight);
+        this.renderJump(jumpY);
+        // this.moveBackground(Math.abs(cloneRollBg.y) - this.stage.canvas.height);
+        this.rollCount += 1;
+    }
+
+    /**
+     * 倒计时
+     */
     countdown() {
         setTimeout(() => {
             --this.currTime
@@ -255,6 +404,9 @@ export default class GamePlay extends EventEmitter {
         }, 1000);
     }
 
+    /**
+     * 
+     */
     computedDistance() {
         const nums = this.currDistance.toString().padStart(4, '0').split('');
         this.distanceNums.forEach((num, index) => {
@@ -275,11 +427,18 @@ export default class GamePlay extends EventEmitter {
         });
     }
 
-    moveBackground(regY = 0) {
+    
+
+    moveBackground(y = 0, time = 3000) {
+        console.log(time)
         createjs.Tween.get(this.rollContainer, { override: true })
             .to({
-                regY,
-            }, 30000, createjs.Ease.linear);
+                y,
+            }, time, createjs.Ease.linear).call(() => {
+                if (this.rollContainer.y >= this.rollBg.image.height * this.rollCount) {
+                    this.renderDepthJump();
+                }
+            })
     }
     moveProgress(scaleX) {
         const sourceRect = this.progress.sourceRect;
@@ -297,6 +456,15 @@ export default class GamePlay extends EventEmitter {
     gameOver() {
         console.log('游戏结束了')
         gameState.gameOver();
+    }
+
+    computedGrid() {
+        const canvasWidth = this.stage.canvas.width;
+        const { width, height } = this.loader.getResult('jump_red');
+        this.renderWidth = width;
+        this.renderHeight = height;
+        this.row = Math.floor((this.rollBg.image.height) / height);
+        this.col = Math.floor((canvasWidth - this.padding) / width);
     }
 
     showTips() {

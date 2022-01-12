@@ -305,4 +305,24 @@ export default [
         src: require('/src/assets/images/gameOverScore/over_quotes_2.png').default,
         type: createjs.Types.IMAGE
     },
+    {
+        id: 'roleMaleFastLeft',
+        src: require('/src/assets/images/gamePlay/role/role_male_fast_left.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleMaleFastRight',
+        src: require('/src/assets/images/gamePlay/role/role_male_fast_right.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleMaleLeft',
+        src: require('/src/assets/images/gamePlay/role/role_male_left.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleMaleRight',
+        src: require('/src/assets/images/gamePlay/role/role_male_right.png').default,
+        type: createjs.Types.IMAGE
+    },
 ]
