@@ -312,30 +312,36 @@ export default class GamePlay extends EventEmitter {
             .to({
                 y,
                 x
-            }, time, createjs.Ease.quadIn)
+            }, time, createjs.Ease.quadIn);
+
+        // 给当前角色下降时每一次tick都会执行
         fallTween.addEventListener('change', () => {
             const originY = -(this.rollBg.image.height - this.stage.canvas.height);
             const moveY = this.rollContainer.y;
 
             const leftX = this.role.x;
             const leftY = this.role.y;
+            const roleWidth = this.role.image.width / 2 - 10;
+            const roleHeight = this.role.image.height / 2  - 10;
+            // 角色
             const points = [
                 new createjs.Point(leftX, leftY),
-                new createjs.Point(leftX + this.role.image.width / 2, leftY),
-                new createjs.Point(leftX , leftY + this.role.image.height / 2),
-                new createjs.Point(leftX + this.role.image.width / 2, leftY + this.role.image.height / 2),
+                new createjs.Point(leftX + roleWidth, leftY),
+                new createjs.Point(leftX , leftY + roleHeight),
+                new createjs.Point(leftX + roleWidth, leftY + roleHeight),
             ]
             for(let i = 0; i < points.length; i++) {
+                // 在跳台容器内 判断此x, y点 有哪些object重叠了
                 let objects = this.jumpContainer.getObjectsUnderPoint(points[i].x, points[i].y);
-                objects = objects.filter((object) => object.name == 'jump')
+                objects = objects.filter((object) => object.name === 'jump')
                 if (objects.length > 0) {
                     createjs.Tween.get(objects[0]).to({
                         x: 0
                     }, 5000, createjs.Ease.linear)
-                    console.log(objects[0])
                     this.jumpRole(
                         this.role.x,
-                        this.role.y - this.renderHeight * 3.3 
+                        this.role.y - this.renderHeight * 3.3,
+                         1100
                     );
                     this.moveBackground(this.rollContainer.y + this.renderHeight * 3.3, 800)
 
@@ -366,7 +372,6 @@ export default class GamePlay extends EventEmitter {
                     currBitmap.name = 'jump';
                     currBitmap['@@name'] = col[c].bitmap;
                     this.jumpContainer.addChild(currBitmap);
-                    this.jumpContainer.setChildIndex(0);
                 }
                 startX += this.renderWidth;
                 this.renderCol++;
@@ -380,12 +385,16 @@ export default class GamePlay extends EventEmitter {
         const cloneRollBg = this.rollBg.clone()
         cloneRollBg.x = 0;
         cloneRollBg.y = -(this.rollBg.image.height * this.rollCount);
+        // 增加循环背景
         this.backgroundContainer.addChild(
             cloneRollBg
         );
         const jumpY = -(this.rollBg.image.height * (this.rollCount - 1) + this.renderHeight);
+        // 循环跳台
         this.renderJump(jumpY);
-        // this.moveBackground(Math.abs(cloneRollBg.y) - this.stage.canvas.height);
+
+        // 给角色置顶
+        this.jumpContainer.addChild(this.role);
         this.rollCount += 1;
     }
 
@@ -430,12 +439,11 @@ export default class GamePlay extends EventEmitter {
     
 
     moveBackground(y = 0, time = 3000) {
-        console.log(time)
         createjs.Tween.get(this.rollContainer, { override: true })
             .to({
                 y,
             }, time, createjs.Ease.linear).call(() => {
-                if (this.rollContainer.y >= this.rollBg.image.height * this.rollCount) {
+                if (this.rollContainer.y >= this.rollBg.image.height * (this.rollCount - 1)) {
                     this.renderDepthJump();
                 }
             })
