@@ -53,7 +53,10 @@ export default class WeightsAlgorithm {
     }
     generate(options) {
         this.setOptions(options);
+        let prevRow = [];
+        let circuitBreak = 0;
         this.matrix.forEach((row, index) => {
+            let colCount = 0;
             row.forEach(column => {
                 const random = this.random();
                 let currColor = this.colors[random];
@@ -64,11 +67,28 @@ export default class WeightsAlgorithm {
                     column.bitmap = currColor.bitmap;
                     column.index = index;
                     this.handleWeight(currColor);
+                    ++colCount
+                    circuitBreak = 0;
                 }
             });
-            row.forEach(column => {
-
-            })
+            if (colCount === 0) {
+                circuitBreak++;
+            }
+            if (circuitBreak > 1) {
+                // 如果短路次数超过1则随机补上一个
+                const random = this.random(this.colors.length - 1);
+                let currColor = this.colors[random];
+                row[random].bitmap = currColor;
+            }
+            if (colCount > 2) {
+                // 如果本行的列数超过2 则出现重复叠加次数减少
+                prevRow.forEach((col, index) => {
+                    if (Boolean(col.bitmap) && Boolean(row[index].bitmap)) {
+                        row[index].bitmap = null
+                    }
+                })
+            }
+            prevRow = row;
         });
         return JSON.parse(JSON.stringify(this.matrix));
     }
@@ -85,7 +105,7 @@ export default class WeightsAlgorithm {
             color.weight -= this.stepWeight;
         }
     }
-    random() {
-        return Math.round(Math.random() * this.colors.length + 2);
+    random(length = this.colors.length + 3) {
+        return Math.round(Math.random() * length);
     }
 }
