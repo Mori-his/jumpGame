@@ -31,37 +31,43 @@ export default class GamePlay extends EventEmitter {
         this.backgroundContainer = new createjs.Container();
         this.jumpContainer = new createjs.Container();
         this.loadSource();
-        window.addEventListener('keydown', (event) => {
-            switch(event.key) {
-                case ARROW_LEFT:
-                    this.leftKeyDown = true;
-                    break;
-                case ARROW_RIGHT:
-                    this.rightKeyDown = true;
-                    break;
-            }
-        });
-        window.addEventListener('keyup', (event) => {
-            switch(event.key) {
-                case ARROW_LEFT:
-                    this.leftKeyDown = false;
-                    break;
-                case ARROW_RIGHT:
-                    this.rightKeyDown = false;
-                    break;
-            }
-        });
-        createjs.Ticker.addEventListener('tick', () => {
-            if (!this.role) return
-            let nextX = this.role.x;
-            if (this.leftKeyDown) {
-                nextX = nextX - 3;
-            }
-            if (this.rightKeyDown) {
-                nextX = nextX + 3;
-            }
-            this.role.x = nextX;
-        })
+    }
+
+    keydown(event) {
+        switch(event.key) {
+            case ARROW_LEFT:
+                this.leftKeyDown = true;
+                break;
+            case ARROW_RIGHT:
+                this.rightKeyDown = true;
+                break;
+        }
+    }
+    keyup() {
+        switch(event.key) {
+            case ARROW_LEFT:
+                this.leftKeyDown = false;
+                break;
+            case ARROW_RIGHT:
+                this.rightKeyDown = false;
+                break;
+        }
+    }
+    tickerTick() {
+
+        
+
+
+
+        if (!this.role) return
+        let nextX = this.role.x;
+        if (this.leftKeyDown) {
+            nextX = nextX - 3;
+        }
+        if (this.rightKeyDown) {
+            nextX = nextX + 3;
+        }
+        this.role.x = nextX;
     }
 
     sourceComplete(event, loader) {
@@ -313,6 +319,11 @@ export default class GamePlay extends EventEmitter {
 
     start() {
         if (!gameState.playing) return
+
+        
+        window.addEventListener('keydown', this.keydown.bind(this));
+        window.addEventListener('keyup', this.keyup.bind(this));
+        createjs.Ticker.addEventListener('tick', this.tickerTick.bind(this));
         // this.moveBackground();
         this.countdown();
         this.jumpRole(
@@ -466,8 +477,6 @@ export default class GamePlay extends EventEmitter {
         });
     }
 
-    
-
     moveBackground(y = 0, time = 3000) {
         createjs.Tween.get(this.rollContainer, { override: true })
             .to({
@@ -534,6 +543,10 @@ export default class GamePlay extends EventEmitter {
         this.volumeOpen.removeAllEventListeners('click');
         this.removeAllListeners('loadProgress');
         this.removeAllListeners('tipsClick');
+        
+        window.removeEventListener('keydown', this.keydown.bind(this));
+        window.removeEventListener('keyup', this.keyup.bind(this));
+        createjs.Ticker.removeEventListener('tick', this.tickerTick.bind(this));
         this.stage.removeChild(
             this.tipsContainer,
             this.container

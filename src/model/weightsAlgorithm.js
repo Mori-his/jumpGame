@@ -80,8 +80,8 @@ export default class WeightsAlgorithm {
                 let currColor = this.colors[random];
                 row[random].bitmap = currColor;
             }
-            if (colCount > 2) {
-                // 如果本行的列数超过2 则出现重复叠加次数减少
+            if (colCount > 1) {
+                // 如果本行的列数超过1 则出现重复叠加次数减少
                 prevRow.forEach((col, index) => {
                     if (Boolean(col.bitmap) && Boolean(row[index].bitmap)) {
                         row[index].bitmap = null
@@ -105,7 +105,7 @@ export default class WeightsAlgorithm {
             color.weight -= this.stepWeight;
         }
     }
-    random(length = this.colors.length + 3) {
+    random(length = this.colors.length + 5) {
         return Math.round(Math.random() * length);
     }
 }
