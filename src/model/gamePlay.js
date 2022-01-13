@@ -5,6 +5,9 @@ import source from './gamePlaySource';
 import WeightsAlgorithm from "./weightsAlgorithm";
 
 const font = 'PingFangSC-Medium,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Source Han Sans", "Noto Sans CJK Sc", "Microsoft YaHei", "Microsoft Jhenghei", sans-serif'
+
+const ARROW_LEFT = 'ArrowLeft';
+const ARROW_RIGHT = 'ArrowRight';
 export default class GamePlay extends EventEmitter {
     source = source;
     currTime = 0;
@@ -16,6 +19,8 @@ export default class GamePlay extends EventEmitter {
     renderCol = 1;
     padding = 100;
     rollCount = 1;
+    leftKeyDown = false;
+    rightKeyDown = false;
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
@@ -26,6 +31,37 @@ export default class GamePlay extends EventEmitter {
         this.backgroundContainer = new createjs.Container();
         this.jumpContainer = new createjs.Container();
         this.loadSource();
+        window.addEventListener('keydown', (event) => {
+            switch(event.key) {
+                case ARROW_LEFT:
+                    this.leftKeyDown = true;
+                    break;
+                case ARROW_RIGHT:
+                    this.rightKeyDown = true;
+                    break;
+            }
+        });
+        window.addEventListener('keyup', (event) => {
+            switch(event.key) {
+                case ARROW_LEFT:
+                    this.leftKeyDown = false;
+                    break;
+                case ARROW_RIGHT:
+                    this.rightKeyDown = false;
+                    break;
+            }
+        });
+        createjs.Ticker.addEventListener('tick', () => {
+            if (!this.role) return
+            let nextX = this.role.x;
+            if (this.leftKeyDown) {
+                nextX = nextX - 3;
+            }
+            if (this.rightKeyDown) {
+                nextX = nextX + 3;
+            }
+            this.role.x = nextX;
+        })
     }
 
     sourceComplete(event, loader) {
@@ -280,44 +316,39 @@ export default class GamePlay extends EventEmitter {
         // this.moveBackground();
         this.countdown();
         this.jumpRole(
-            this.jumpRoleX,
-           (this.jumpRoleY - this.renderHeight * 3.3),
+           this.jumpRoleY - this.renderHeight * 3.3,
         )
     }
 
     jumpRole(
-        x = 0,
         y = 0,
         time = 800
     ) {
-        this.jumpRoleX = x;
+        this.rise = true
         this.jumpRoleY = y;
         createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
-                x
             }, time, createjs.Ease.quadOut).call(() => {
-                this.fallingRole(this.jumpRoleX, this.rollBg.image.height);
+                this.rise = false;
+                this.fallingRole(this.rollBg.image.height);
             });
 
     }
     fallingRole(
-        x = 0,
         y = 0,
         time = 1100
     ) {
-        this.jumpRoleX = x;
         this.jumpRoleY = y;
         const fallTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
-                x
             }, time, createjs.Ease.quadIn);
 
         // 给当前角色下降时每一次tick都会执行
         fallTween.addEventListener('change', () => {
-            const originY = -(this.rollBg.image.height - this.stage.canvas.height);
-            const moveY = this.rollContainer.y;
+            // const originY = -(this.rollBg.image.height - this.stage.canvas.height);
+            // const moveY = this.rollContainer.y;
 
             const leftX = this.role.x;
             const leftY = this.role.y;
@@ -339,9 +370,8 @@ export default class GamePlay extends EventEmitter {
                         x: 0
                     }, 5000, createjs.Ease.linear)
                     this.jumpRole(
-                        this.role.x,
                         this.role.y - this.renderHeight * 3.3,
-                         1100
+                        1100
                     );
                     this.moveBackground(this.rollContainer.y + this.renderHeight * 3.3, 800)
 
