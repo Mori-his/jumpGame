@@ -67,18 +67,18 @@ export default class WeightsAlgorithm {
                     column.bitmap = currColor.bitmap;
                     column.index = index;
                     this.handleWeight(currColor);
-                    ++colCount
+                    ++colCount;
                     circuitBreak = 0;
                 }
             });
             if (colCount === 0) {
-                circuitBreak++;
+                ++circuitBreak;
             }
-            if (circuitBreak > 1) {
+            if (circuitBreak > 0) {
                 // 如果短路次数超过1则随机补上一个
                 const random = this.random(this.colors.length - 1);
                 let currColor = this.colors[random];
-                row[random].bitmap = currColor;
+                row[random].bitmap = currColor.bitmap;
             }
             if (colCount > 1) {
                 // 如果本行的列数超过1 则出现重复叠加次数减少

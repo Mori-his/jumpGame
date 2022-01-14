@@ -54,11 +54,6 @@ export default class GamePlay extends EventEmitter {
         }
     }
     tickerTick() {
-
-        
-
-
-
         if (!this.role) return
         let nextX = this.role.x;
         if (this.leftKeyDown) {
@@ -342,19 +337,25 @@ export default class GamePlay extends EventEmitter {
                 y,
             }, time, createjs.Ease.quadOut).call(() => {
                 this.rise = false;
-                this.fallingRole(this.rollBg.image.height);
+                this.fallingRole(this.role.y + this.stage.canvas.height / 3);
+            })
+            .call(() => {
+                const offsetY = this.stage.canvas.height / 1.5 - this.role.y;
+                if (this.rollContainer.y < offsetY) {
+                    this.moveBackground(offsetY, 800)
+                }
             });
 
     }
     fallingRole(
         y = 0,
-        time = 1100
+        time = 2000
     ) {
         this.jumpRoleY = y;
         const fallTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
-            }, time, createjs.Ease.quadIn);
+            }, time, createjs.Ease.linear);
 
         // 给当前角色下降时每一次tick都会执行
         fallTween.addEventListener('change', () => {
@@ -378,19 +379,26 @@ export default class GamePlay extends EventEmitter {
                 objects = objects.filter((object) => object.name === 'jump')
                 if (objects.length > 0) {
                     createjs.Tween.get(objects[0]).to({
-                        x: 0
-                    }, 5000, createjs.Ease.linear)
+                        alpha: 0
+                    }, 300, createjs.Ease.linear)
+                    .call(() => {
+                        // 执行完渐变动画后删除次Object
+                        this.rollContainer.removeChild(objects[0]);
+                    })
                     this.jumpRole(
                         this.role.y - this.renderHeight * 3.3,
                         1100
                     );
-                    this.moveBackground(this.rollContainer.y + this.renderHeight * 3.3, 800)
 
                     // fallTween.setPaused(true);
                 }
             }
 
         });
+
+        fallTween.call(() => {
+            this.gameOver();
+        })
     }
 
     /**
@@ -478,13 +486,18 @@ export default class GamePlay extends EventEmitter {
     }
 
     moveBackground(y = 0, time = 3000) {
-        createjs.Tween.get(this.rollContainer, { override: true })
+        const bgTween = createjs.Tween.get(this.rollContainer, { override: true })
             .to({
                 y,
             }, time, createjs.Ease.linear).call(() => {
                 if (this.rollContainer.y >= this.rollBg.image.height * (this.rollCount - 1)) {
                     this.renderDepthJump();
                 }
+            });
+            bgTween.addEventListener('change', () => {
+                // 增加米数
+                this.currDistance++
+                this.computedDistance();
             })
     }
     moveProgress(scaleX) {
