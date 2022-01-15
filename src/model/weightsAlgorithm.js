@@ -8,6 +8,7 @@ export default class WeightsAlgorithm {
 
     stepWeight = 5;
     maxWeight = 100;
+    maxColNum = 2
 
     constructor(stage, {row, column, loader}) {
         this.stage = stage;
@@ -57,20 +58,33 @@ export default class WeightsAlgorithm {
         let circuitBreak = 0;
         this.matrix.forEach((row, index) => {
             let colCount = 0;
-            row.forEach(column => {
-                const random = this.random();
-                let currColor = this.colors[random];
-                if (currColor) {
-                    const currWeight = currColor.weight / this.maxWeight;
-                    const index = Math.round(random * currWeight);
-                    currColor = this.colors[index];
-                    column.bitmap = currColor.bitmap;
-                    column.index = index;
-                    this.handleWeight(currColor);
-                    ++colCount;
-                    circuitBreak = 0;
-                }
-            });
+            // row.forEach(column => {
+            //     const random = this.random();
+            //     let currColor = this.colors[random];
+            //     if (currColor) {
+            //         const currWeight = currColor.weight / this.maxWeight;
+            //         const index = Math.round(random * currWeight);
+            //         currColor = this.colors[index];
+            //         column.bitmap = currColor.bitmap;
+            //         column.index = index;
+            //         this.handleWeight(currColor);
+            //         ++colCount;
+            //         circuitBreak = 0;
+            //     }
+            // });
+
+            for (let i = 0; i < this.maxColNum; i++) {
+              const random = this.random(this.colors.length + 2);
+              const randomCol = this.random(this.column - 1);
+              const currColor = this.colors[random]
+              if (currColor) {
+                  row[randomCol].bitmap = currColor.bitmap;
+                  row[randomCol].col = randomCol
+                  ++colCount;
+                  circuitBreak = 0;
+              }
+            }
+
             if (colCount === 0) {
                 ++circuitBreak;
             }

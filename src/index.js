@@ -1,48 +1,67 @@
 import GameStartPanel from './model/startPanel';
-import State from './controls/gameState'
 import GameLoading from './model/gameLoding';
 import GamePlay from './model/gamePlay';
 import { GameScore } from './model/gameScore';
+import gameState from './controls/gameState'
 import WeightsAlgorithm from './model/weightsAlgorithm';
+
+import './assets/css/ranking-list.css'
 
 
 window.addEventListener('load', function() {
     const maxWidth = 375;
     const maxHeight = 812;
     const stage = new createjs.Stage('mainCanvas');
-    
+
     stage.canvas.width = Math.min(window.innerWidth, maxWidth)
     stage.canvas.height = Math.min(window.innerHeight, maxHeight)
     createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
     createjs.Ticker.framerate = 60;
     createjs.Ticker.addEventListener('tick', stage);
     const gameStartPanel = new GameStartPanel(stage);
-    
-    
-    gameStartPanel.on('start', () => {
-        State.playing = true;
+
+    let gamePlay;
+    let gameScore;
+    let gameLoading;
+    function start() {
+        gameState.playing = true;
         // 开始游戏
-        const gameLoading = new GameLoading(stage);
-        let gamePlay;
-        let gameScore;
+        gameLoading = new GameLoading(stage);
         gameLoading.on('loaded', () => {
-            gamePlay = new GamePlay(stage);
+            const noviceTips = window.localStorage.getItem('noviceTips')
+            console.log('noviceTips:', noviceTips)
+
+            gamePlay = new GamePlay(stage, {
+              noviceTips: noviceTips !== 'false'
+            });
             gamePlay.on('loadProgress', (context, percentage) => {
                 gameLoading.toProgress(percentage);
             });
         });
-    
+
         gameLoading.on('play', () => {
             gameStartPanel.destory();
             gameLoading.destory();
-            gameScore = new GameScore(stage, {
-                loader: gamePlay.loader,
-            })
             gamePlay.run();
-            // gameScore.render();
+            window.localStorage.setItem('noviceTips', false)
         });
+    }
+
+    gameStartPanel.on('start', () => {
+      start();
+    });
+
+    gameState.on('gameOver', () => {
+
+      gameScore = new GameScore(stage, {
+          loader: gamePlay.loader,
+          score: gameState.score
+      });
+
+      gameScore.render();
+    });
+    gameState.on('restart', () => {
+      // gamePlay.run();
+      window.location.reload()
     })
 })
-
-
-

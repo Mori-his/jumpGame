@@ -1,11 +1,18 @@
+import { EventEmitter } from 'events';
 
-class GameState {
+class GameState extends EventEmitter {
     playing = false;
-
-    gameOver() {
+    score = 0
+    gameOver(score) {
         this.playing = false;
+        this.score = score
+        this.emit('gameOver');
 
-        
+    }
+
+    restart() {
+
+      this.emit('restart');
     }
 }
 
@@ -13,6 +20,3 @@ class GameState {
 
 
 export default new GameState();
-
-
-

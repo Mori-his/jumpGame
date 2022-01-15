@@ -9,11 +9,14 @@ const font = 'PingFangSC-Medium,-apple-system, BlinkMacSystemFont, Roboto, "Helv
 const ARROW_LEFT = 'ArrowLeft';
 const ARROW_RIGHT = 'ArrowRight';
 export default class GamePlay extends EventEmitter {
+    // 是否展示新手提示
+    noviceTips = true;
     source = source;
     currTime = 0;
     currDistance = 0;
     // 踩中块累计
     currBatterNum = 0;
+    currBatterType = null;
     row = 0;
     col = 0;
     renderRow = 1;
@@ -26,6 +29,9 @@ export default class GamePlay extends EventEmitter {
         super();
         this.stage = stage;
         this.time = options.time || 40;
+        this.noviceTips = options.noviceTips;
+        console.log('this.noviceTips:', this.noviceTips)
+        console.log('this.noviceTips:', options.noviceTips)
         this.currTime = this.time;
         this.container = new createjs.Container();
         this.moveContainer = new createjs.Container();
@@ -57,7 +63,6 @@ export default class GamePlay extends EventEmitter {
 
     mouseMove(event) {
         this.moveRoleX(event.offsetX);
-        console.log('dddd')
     }
 
     touchStart(event) {
@@ -95,8 +100,14 @@ export default class GamePlay extends EventEmitter {
         this.renderDistance(loader);
         // 渲染游戏人物
         this.renderRole(loader);
+        // 连击效果
+        this.renderBatterEffet();
         // 渲染初始化时的新手提示
-        this.renderTips(loader);
+        if (this.noviceTips) {
+          this.renderTips(loader);
+        } else {
+          this.start()
+        }
     }
 
     /**
@@ -108,7 +119,7 @@ export default class GamePlay extends EventEmitter {
         this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
         this.jumpRoleX = this.role.x;
         this.jumpRoleY = this.role.y;
-        this.role.scale = 0.7;
+        this.role.scale = 0.5;
         this.jumpContainer.addChild(this.role);
         this.stage.update();
     }
@@ -128,7 +139,7 @@ export default class GamePlay extends EventEmitter {
         this.rollTree.y = 0;
         this.rollContainer.y = -(this.rollBg.image.height - this.stage.canvas.height);
         this.rollTree.regX = 25;
-        
+
 
         this.computedGrid();
         this.renderJump(this.rollBg.image.height - this.renderHeight);
@@ -140,7 +151,7 @@ export default class GamePlay extends EventEmitter {
             this.backgroundContainer,
             this.jumpContainer
         );
-        
+
         // 给滚动容器合固定容器组合
         this.moveContainer.addChild(
             this.rollContainer,
@@ -181,7 +192,7 @@ export default class GamePlay extends EventEmitter {
         const batterBg = new createjs.Bitmap(loader.getResult('overtime_bg'));
         batterBg.x = this.stage.canvas.width - batterBg.image.width - 18;
         batterBg.y = 44;
-        
+
         this.batterNums = [];
         const batterImage = loader.getResult('batter_num_0');
         const batterNumLeft = batterBg.x + 33;
@@ -191,7 +202,7 @@ export default class GamePlay extends EventEmitter {
                 new createjs.Bitmap(batterImage).set({x: currBatterNumLeft, y: 58})
             );
         }
-        
+
         const batterAddIcon = new createjs.Text('+', `bold 18px ${font}`, '#004786');
         batterAddIcon.outline = 1;
         batterAddIcon.x = batterBg.x + 15;
@@ -252,9 +263,29 @@ export default class GamePlay extends EventEmitter {
         );
     }
 
+    renderBatterEffet() {
+        this.batter2Img = this.loader.getResult('batter_2');
+        this.batter3Img = this.loader.getResult('batter_3');
+        this.batter4Img = this.loader.getResult('batter_4');
+        this.batterContainer = new createjs.Bitmap(this.batter2Img);
+        this.batterContainer.x = (this.stage.canvas.width - this.batter2Img.width) / 2;
+        this.batterContainer.y = 100;
+    }
+    renderBatterContainer() {
+      this.batterContainer.alpha = 1;
+      this.container.addChild(this.batterContainer);
+    }
+    removeBatterContainer() {
+      createjs.Tween.get(this.batterContainer)
+        .to({
+          alpha: 0
+        }, 300, createjs.Ease.linear).call(() => {
+            this.container.removeChild(this.batterContainer);
+        });
+    }
     renderTips(loader) {
         this.tipsContainer = new createjs.Container();
-        
+
         const backgroundAlpha = new createjs.Shape();
         backgroundAlpha.graphics.beginFill('rgba(0, 0, 0, 0.7)').drawRect(
             0,
@@ -267,7 +298,7 @@ export default class GamePlay extends EventEmitter {
         const snow2 = new createjs.Bitmap(loader.getResult('snow'));
         const snow3 = new createjs.Bitmap(loader.getResult('snow'));
         const snow4 = new createjs.Bitmap(loader.getResult('snow'));
-        
+
         snow1.x = 73;
         snow1.y = 175;
         snow2.x = 290;
@@ -276,7 +307,7 @@ export default class GamePlay extends EventEmitter {
         snow3.y = 66;
         snow4.x = 52;
         snow4.y = 389;
-        
+
         const arrowLeft = new createjs.Bitmap(loader.getResult('leftArrow'));
         const arrowRight = new createjs.Bitmap(loader.getResult('leftArrow'));
         const hand = new createjs.Bitmap(loader.getResult('hand'));
@@ -289,7 +320,7 @@ export default class GamePlay extends EventEmitter {
         hand.x = (this.stage.canvas.width - hand.image.width) / 2;
         hand.y = (this.stage.canvas.height - arrowLeft.image.height) - 200;
 
-            
+
         const guideLogo = new createjs.Bitmap(loader.getResult('guideLogo'));
         const guideText = new createjs.Bitmap(loader.getResult('guideText'));
         guideLogo.x = (this.stage.canvas.width - guideLogo.image.width) / 2;
@@ -297,7 +328,7 @@ export default class GamePlay extends EventEmitter {
         guideText.x = (this.stage.canvas.width - guideText.image.width) / 2;
         guideText.y = hand.y + guideText.image.height + 13;
         this.tipsContainer.addEventListener('click', this.handleTipsClick.bind(this))
-        
+
         createjs.Tween.get(arrowLeft, { loop: true })
             .to({x: arrowLeft.x - 10}, 300, createjs.Ease.linear)
             .to({x: arrowLeft.x}, 300, createjs.Ease.quadInOut)
@@ -340,7 +371,7 @@ export default class GamePlay extends EventEmitter {
         )
     }
     bindEvents() {
-        
+
         this.keydown = this.keydown.bind(this)
         this.keyup = this.keyup.bind(this)
         this.mouseMove = this.mouseMove.bind(this);
@@ -370,19 +401,20 @@ export default class GamePlay extends EventEmitter {
     ) {
         this.rise = true
         this.jumpRoleY = y;
-        createjs.Tween.get(this.role, { override: true })
+        const roleTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
             }, time, createjs.Ease.quadOut).call(() => {
                 this.rise = false;
                 this.fallingRole(this.role.y + this.stage.canvas.height / 3);
             })
-            .call(() => {
-                const offsetY = this.stage.canvas.height / 1.5 - this.role.y;
-                if (this.rollContainer.y < offsetY) {
-                    this.moveBackground(offsetY, 800)
-                }
-            });
+        roleTween.call(() => {
+            const offsetY = this.stage.canvas.height / 1.5 - this.role.y;
+            if (this.rollContainer.y < offsetY) {
+                this.moveBackground(offsetY, 800)
+            }
+        });
+        return roleTween;
 
     }
     fallingRole(
@@ -400,16 +432,16 @@ export default class GamePlay extends EventEmitter {
             // const originY = -(this.rollBg.image.height - this.stage.canvas.height);
             // const moveY = this.rollContainer.y;
 
-            const leftX = this.role.x;
-            const leftY = this.role.y;
-            const roleWidth = this.role.image.width / 2 - 10;
-            const roleHeight = this.role.image.height / 2  - 10;
+            const leftX = this.role.x + this.role.image.width / 3;
+            const leftY = this.role.y + this.role.image.height / 3;
+            const roleWidth = this.role.image.width * 0.33;
+            const roleHeight = this.role.image.height * 0.66;
             // 角色
             const points = [
                 new createjs.Point(leftX, leftY),
-                new createjs.Point(leftX + roleWidth, leftY),
-                new createjs.Point(leftX , leftY + roleHeight),
-                new createjs.Point(leftX + roleWidth, leftY + roleHeight),
+                // new createjs.Point(leftX + roleWidth, leftY),
+                // new createjs.Point(leftX , leftY + roleHeight),
+                // new createjs.Point(leftX + roleWidth, leftY + roleHeight),
             ]
             for(let i = 0; i < points.length; i++) {
                 // 在跳台容器内 判断此x, y点 有哪些object重叠了
@@ -423,13 +455,66 @@ export default class GamePlay extends EventEmitter {
                         // 执行完渐变动画后删除次Object
                         this.rollContainer.removeChild(objects[0]);
                     });
-                    this.currBatterNum++;
-                    this.computedBatterNum();
-                    this.jumpRole(
-                        this.role.y - this.renderHeight * 3.3,
+
+
+
+                    const currBitmapName = objects[0]['@@name'];
+                    if (this.currBatterType === null) {
+                      this.currBatterType = currBitmapName
+                    } else if (this.currBatterType === currBitmapName) {
+                        this.currBatterNum++;
+                    } else {
+                        this.currBatterNum = 1;
+                        this.currBatterType = currBitmapName;
+                        clearTimeout(this.batterEffectTimer);
+                        this.removeBatterContainer();
+                    }
+
+                    switch (this.currBatterNum) {
+                      case 2:
+                          this.batterContainer.image = this.batter2Img
+                          break;
+                      case 3:
+                          this.batterContainer.image = this.batter3Img
+                          break;
+                      case 4:
+                          this.batterContainer.image = this.batter4Img
+                          break;
+                    }
+                    if (this.currBatterNum >= 1) {
+                      this.renderBatterContainer()
+                      clearTimeout(this.batterEffectTimer);
+                      this.batterEffectTimer = setTimeout(() => {
+                          this.removeBatterContainer();
+                      }, 4000);
+                    }
+
+
+
+
+
+                    if (this.currBatterNum >= 4) {
+                      this.jumpRole(
+                        this.role.y - this.renderHeight * 15,
                         this.role.x,
-                        1100
-                    );
+                        3000
+                      ).call(() => {
+                        clearTimeout(this.batterEffectTimer);
+                        this.removeBatterContainer();
+                      });
+                      this.moveBackground(
+                        this.rollContainer.y + this.renderHeight * 15,
+                        3000
+                      )
+                      this.currBatterNum = 0;
+                    } else {
+                      this.jumpRole(
+                          this.role.y - this.renderHeight * 3.3,
+                          this.role.x,
+                          1100
+                      );
+                    }
+                    this.computedBatterNum();
 
                     // fallTween.setPaused(true);
                 }
@@ -504,7 +589,7 @@ export default class GamePlay extends EventEmitter {
     }
 
     /**
-     * 
+     *
      */
     computedDistance() {
         const nums = this.currDistance.toString().padStart(4, '0').split('');
@@ -530,12 +615,11 @@ export default class GamePlay extends EventEmitter {
         const bgTween = createjs.Tween.get(this.rollContainer, { override: true })
             .to({
                 y,
-            }, time, createjs.Ease.linear).call(() => {
+            }, time, createjs.Ease.linear);
+            bgTween.addEventListener('change', () => {
                 if (this.rollContainer.y >= this.rollBg.image.height * (this.rollCount - 1)) {
                     this.renderDepthJump();
                 }
-            });
-            bgTween.addEventListener('change', () => {
                 // 增加米数
                 this.currDistance++
                 this.computedDistance();
@@ -558,7 +642,7 @@ export default class GamePlay extends EventEmitter {
         console.log('游戏结束了')
         this.destory();
         createjs.Ticker.reset();
-        gameState.gameOver();
+        gameState.gameOver(this.currDistance);
     }
 
     computedGrid() {
@@ -594,12 +678,12 @@ export default class GamePlay extends EventEmitter {
     }
 
     destory() {
-        this.tipsContainer.removeAllEventListeners('click');
-        this.volumeClose.removeAllEventListeners('click');
-        this.volumeOpen.removeAllEventListeners('click');
+        this.tipsContainer?.removeAllEventListeners('click');
+        this.volumeClose?.removeAllEventListeners('click');
+        this.volumeOpen?.removeAllEventListeners('click');
         this.removeAllListeners('loadProgress');
         this.removeAllListeners('tipsClick');
-        
+
         window.removeEventListener('keydown', this.keydown);
         window.removeEventListener('keyup', this.keyup);
         this.stage.canvas.removeEventListener('mousemove', this.mouseMove);
@@ -612,5 +696,5 @@ export default class GamePlay extends EventEmitter {
             this.container
         );
     }
-    
+
 }

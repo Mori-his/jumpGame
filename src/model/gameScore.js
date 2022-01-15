@@ -25,7 +25,7 @@ export class GameScore {
             this.stage.canvas.height,
         );
         this.backgroundAlpha.addEventListener('click', () => {});
-        
+
         const light = new createjs.Bitmap(loader.getResult('light'));
         light.x = 0;
         light.y = 110;
@@ -39,6 +39,9 @@ export class GameScore {
         btnShare.x = (this.stage.canvas.width - btnShare.image.width) / 2 + 5;
         btnShare.y = btnRestart.y - btnShare.image.height - 13;
 
+        btnRestart.addEventListener('click', () => {
+          gameState.restart();
+        })
 
         const overQuotes1 = new createjs.Bitmap(loader.getResult('overQuotes1'))
         const overQuotes2 = new createjs.Bitmap(loader.getResult('overQuotes2'))
@@ -47,11 +50,11 @@ export class GameScore {
         overQuotes1.y = btnShare.y - overQuotes1.image.height - 48;
         overQuotes2.y = btnShare.y - overQuotes2.image.height - 30;
 
-        
+
         const scorePanel = new createjs.Bitmap(loader.getResult('scorePanel'));
         scorePanel.x = (this.stage.canvas.width - scorePanel.image.width) / 2;
         scorePanel.y = btnShare.y - scorePanel.image.height - 136;
-        
+
         const scoreTitle = new createjs.Text('恭喜!', `bold 32px ${font}`, '#fff');
         scoreTitle.x = scorePanel.x + 101;
         scoreTitle.y = scorePanel.y + 35;
@@ -98,5 +101,3 @@ export class GameScore {
     }
 
 }
-
-
