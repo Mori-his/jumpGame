@@ -12,6 +12,7 @@ export default class GamePlay extends EventEmitter {
     source = source;
     currTime = 0;
     currDistance = 0;
+    // 踩中块累计
     currBatterNum = 0;
     row = 0;
     col = 0;
@@ -24,7 +25,7 @@ export default class GamePlay extends EventEmitter {
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
-        this.time = options.time || 90;
+        this.time = options.time || 40;
         this.currTime = this.time;
         this.container = new createjs.Container();
         this.moveContainer = new createjs.Container();
@@ -53,7 +54,25 @@ export default class GamePlay extends EventEmitter {
                 break;
         }
     }
-    tickerTick() {
+
+    mouseMove(event) {
+        this.moveRoleX(event.offsetX);
+        console.log('dddd')
+    }
+
+    touchStart(event) {
+        const { x } = this.stage.canvas.getBoundingClientRect();
+        const touch = event.touches[0];
+        const moveX = touch.clientX - x
+        let offsetX = this.renderWidth / 2;
+
+        if (this.role.y > moveX) {
+            offsetX = -offsetX;
+        }
+        this.moveRoleX(moveX + offsetX);
+    }
+
+    tickerTick(event) {
         if (!this.role) return
         let nextX = this.role.x;
         if (this.leftKeyDown) {
@@ -89,7 +108,7 @@ export default class GamePlay extends EventEmitter {
         this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
         this.jumpRoleX = this.role.x;
         this.jumpRoleY = this.role.y;
-        this.role.scale = 0.7
+        this.role.scale = 0.7;
         this.jumpContainer.addChild(this.role);
         this.stage.update();
     }
@@ -309,25 +328,44 @@ export default class GamePlay extends EventEmitter {
         );
         this.showTips()
         this.stage.update()
-        window.test = this
     }
 
     start() {
         if (!gameState.playing) return
 
-        
-        window.addEventListener('keydown', this.keydown.bind(this));
-        window.addEventListener('keyup', this.keyup.bind(this));
-        createjs.Ticker.addEventListener('tick', this.tickerTick.bind(this));
-        // this.moveBackground();
+        this.bindEvents();
         this.countdown();
         this.jumpRole(
            this.jumpRoleY - this.renderHeight * 3.3,
         )
     }
+    bindEvents() {
+        
+        this.keydown = this.keydown.bind(this)
+        this.keyup = this.keyup.bind(this)
+        this.mouseMove = this.mouseMove.bind(this);
+        this.tickerTick = this.tickerTick.bind(this);
+        window.addEventListener('keydown', this.keydown);
+        window.addEventListener('keyup', this.keyup);
+        this.stage.canvas.addEventListener('mousemove', this.mouseMove);
+        this.touchStart = this.touchStart.bind(this);
+        this.stage.canvas.addEventListener('touchstart', this.touchStart);
+        this.stage.canvas.addEventListener('touchmove', this.touchStart)
+
+        this.tickerTick = this.tickerTick.bind(this);
+        createjs.Ticker.addEventListener('tick', this.tickerTick);
+    }
+
+    moveRoleX(x = this.role.x) {
+        createjs.Tween.get(this.role)
+            .to({
+                x,
+            }, 300, createjs.Ease.linear);
+    }
 
     jumpRole(
-        y = 0,
+        y = this.jumpRoleY,
+        x = this.role.x,
         time = 800
     ) {
         this.rise = true
@@ -384,9 +422,12 @@ export default class GamePlay extends EventEmitter {
                     .call(() => {
                         // 执行完渐变动画后删除次Object
                         this.rollContainer.removeChild(objects[0]);
-                    })
+                    });
+                    this.currBatterNum++;
+                    this.computedBatterNum();
                     this.jumpRole(
                         this.role.y - this.renderHeight * 3.3,
+                        this.role.x,
                         1100
                     );
 
@@ -515,6 +556,8 @@ export default class GamePlay extends EventEmitter {
     }
     gameOver() {
         console.log('游戏结束了')
+        this.destory();
+        createjs.Ticker.reset();
         gameState.gameOver();
     }
 
@@ -557,9 +600,13 @@ export default class GamePlay extends EventEmitter {
         this.removeAllListeners('loadProgress');
         this.removeAllListeners('tipsClick');
         
-        window.removeEventListener('keydown', this.keydown.bind(this));
-        window.removeEventListener('keyup', this.keyup.bind(this));
-        createjs.Ticker.removeEventListener('tick', this.tickerTick.bind(this));
+        window.removeEventListener('keydown', this.keydown);
+        window.removeEventListener('keyup', this.keyup);
+        this.stage.canvas.removeEventListener('mousemove', this.mouseMove);
+        this.stage.canvas.removeEventListener('touchstart', this.touchStart);
+        this.stage.canvas.removeEventListener('touchmove', this.touchStart);
+
+        createjs.Ticker.removeEventListener('tick', this.tickerTick);
         this.stage.removeChild(
             this.tipsContainer,
             this.container
