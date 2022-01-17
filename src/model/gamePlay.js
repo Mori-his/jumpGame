@@ -30,8 +30,6 @@ export default class GamePlay extends EventEmitter {
         this.stage = stage;
         this.time = options.time || 40;
         this.noviceTips = options.noviceTips;
-        console.log('this.noviceTips:', this.noviceTips)
-        console.log('this.noviceTips:', options.noviceTips)
         this.currTime = this.time;
         this.container = new createjs.Container();
         this.moveContainer = new createjs.Container();
@@ -70,9 +68,11 @@ export default class GamePlay extends EventEmitter {
         const touch = event.touches[0];
         const moveX = touch.clientX - x
         let offsetX = this.renderWidth / 2;
-
-        if (this.role.y > moveX) {
+        if (this.role.x > moveX) {
             offsetX = -offsetX;
+            this.role.image = this.rise ? this.roleLeft : this.roleFastLeft;
+        } else {
+            this.role.image = this.rise ? this.roleRight : this.roleFastRight;
         }
         this.moveRoleX(moveX + offsetX);
     }
@@ -114,7 +114,11 @@ export default class GamePlay extends EventEmitter {
      * 渲染人物角色
      */
     renderRole(loader) {
-        this.role = new createjs.Bitmap(loader.getResult('roleMaleRight'));
+        this.roleRight = loader.getResult('roleMaleRight');
+        this.roleLeft = loader.getResult('roleMaleLeft');
+        this.roleFastRight = loader.getResult('roleMaleFastRight')
+        this.roleFastLeft = loader.getResult('roleMaleFastLeft')
+        this.role = new createjs.Bitmap(this.roleRight);
         this.role.y = this.rollBg.image.height - this.role.image.height;
         this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
         this.jumpRoleX = this.role.x;
@@ -401,6 +405,7 @@ export default class GamePlay extends EventEmitter {
     ) {
         this.rise = true
         this.jumpRoleY = y;
+        this.role.image = this.roleRight;
         const roleTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
@@ -422,6 +427,7 @@ export default class GamePlay extends EventEmitter {
         time = 2000
     ) {
         this.jumpRoleY = y;
+        this.role.image = this.roleFastRight;
         const fallTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
@@ -494,25 +500,26 @@ export default class GamePlay extends EventEmitter {
 
 
                     if (this.currBatterNum >= 4) {
-                      this.jumpRole(
-                        this.role.y - this.renderHeight * 15,
-                        this.role.x,
-                        3000
-                      ).call(() => {
-                        clearTimeout(this.batterEffectTimer);
-                        this.removeBatterContainer();
-                      });
-                      this.moveBackground(
-                        this.rollContainer.y + this.renderHeight * 15,
-                        3000
-                      )
-                      this.currBatterNum = 0;
+                        this.role.image = this.roleFastRight;
+                        this.jumpRole(
+                            this.role.y - this.renderHeight * 15,
+                            this.role.x,
+                            3000
+                        ).call(() => {
+                            clearTimeout(this.batterEffectTimer);
+                            this.removeBatterContainer();
+                        });
+                        this.moveBackground(
+                            this.rollContainer.y + this.renderHeight * 15,
+                            3000
+                        )
+                        this.currBatterNum = 0;
                     } else {
-                      this.jumpRole(
-                          this.role.y - this.renderHeight * 3.3,
-                          this.role.x,
-                          1100
-                      );
+                        this.jumpRole(
+                            this.role.y - this.renderHeight * 3.3,
+                            this.role.x,
+                            1100
+                        );
                     }
                     this.computedBatterNum();
 
