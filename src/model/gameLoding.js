@@ -23,7 +23,7 @@ export default class GameLoading extends EventEmitter {
             src: require('/src/assets/images/trumpet.png').default,
             type: createjs.Types.IMAGE
         },
-        
+
     ]
     constructor(stage) {
         super();
@@ -70,7 +70,6 @@ export default class GameLoading extends EventEmitter {
                 loadingBgHeight - 2,
                 progressRadius
             );
-
         this.progressCableCar = new createjs.Bitmap(loader.getResult('loadingCableCar'));
         this.progressCableCar.x = (this.stage.canvas.width - loadingBgWidth - this.progressCableCar.image.width) / 2
         this.progressCableCar.y = 382
@@ -132,5 +131,3 @@ export default class GameLoading extends EventEmitter {
         this.backgroundAlpha.removeAllEventListeners('click')
     }
 }
-
-
