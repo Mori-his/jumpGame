@@ -325,4 +325,9 @@ export default [
         src: require('/src/assets/images/gamePlay/role/role_male_right.png').default,
         type: createjs.Types.IMAGE
     },
+    {
+        id: 'BGMMP3',
+        src: require('/src/assets/sound/BGM.mp3').default,
+        type: createjs.Types.SOUND
+    },
 ]

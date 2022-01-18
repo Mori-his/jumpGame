@@ -25,6 +25,7 @@ export default class GamePlay extends EventEmitter {
     rollCount = 1;
     leftKeyDown = false;
     rightKeyDown = false;
+    soundId = 'BGMMP3'
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
@@ -109,7 +110,6 @@ export default class GamePlay extends EventEmitter {
           this.start()
         }
     }
-
     /**
      * 渲染人物角色
      */
@@ -222,10 +222,12 @@ export default class GamePlay extends EventEmitter {
         this.volumeOpen.addEventListener('click', () => {
             this.distanceContainer.addChild(this.volumeClose);
             this.distanceContainer.removeChild(this.volumeOpen);
+            createjs.Sound.stop(this.soundId);
         });
         this.volumeClose.addEventListener('click', () => {
             this.distanceContainer.addChild(this.volumeOpen);
             this.distanceContainer.removeChild(this.volumeClose);
+            createjs.Sound.play(this.soundId, { loop: -1 });
         });
 
 
@@ -367,7 +369,7 @@ export default class GamePlay extends EventEmitter {
 
     start() {
         if (!gameState.playing) return
-
+        createjs.Sound.play(this.soundId, {loop: -1});
         this.bindEvents();
         this.countdown();
         this.jumpRole(
@@ -431,7 +433,7 @@ export default class GamePlay extends EventEmitter {
         const fallTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
-            }, time, createjs.Ease.linear);
+            }, time, createjs.Ease.cubicInOut);
 
         // 给当前角色下降时每一次tick都会执行
         fallTween.addEventListener('change', () => {
@@ -647,6 +649,7 @@ export default class GamePlay extends EventEmitter {
     }
     gameOver() {
         console.log('游戏结束了')
+        createjs.Sound.stop(this.soundId);
         this.destory();
         createjs.Ticker.reset();
         gameState.gameOver(this.currDistance);

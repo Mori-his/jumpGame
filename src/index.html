@@ -25,6 +25,8 @@
             font-size: 100%;
             font: inherit;
             vertical-align: baseline;
+            -webkit-user-select: none;
+            user-select: none;
         }
         /* HTML5 display-role reset for older browsers */
         article, aside, details, figcaption, figure,
@@ -53,9 +55,11 @@
             background-color: #222831;
             text-align: center;
             overflow: hidden;
+            -webkit-user-select: none;
             user-select: none;
         }
         canvas {
+            -webkit-user-select: none;
             user-select: none;
         }
     </style>
@@ -148,7 +152,10 @@
 </head>
 <body>
     <canvas id="mainCanvas"></canvas>
-    <div id="ranking-list">
+    <div
+      id="ranking-list"
+      style="display: none;"
+      >
       <img src="./assets/images/ranking-list/title-1.png" class="ranking-list__title" />
       <div class="ranking-list__content">
         <img src="./assets/images/ranking-list/content-title.png" class="ranking-list__content--title" />
