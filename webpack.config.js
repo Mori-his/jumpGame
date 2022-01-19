@@ -77,11 +77,11 @@ module.exports = {
                 minifyURLs: true,
             },
         }),
-        new CopyPlugin({
-            patterns: [
-                { from: path.resolve(__dirname, 'src/assets'), to: path.resolve(outputPath, 'assets') },
-            ],
-        }),
+        // new CopyPlugin({
+        //     patterns: [
+        //         { from: path.resolve(__dirname, 'src/assets'), to: path.resolve(outputPath, 'assets') },
+        //     ],
+        // }),
     ]
 };
 
