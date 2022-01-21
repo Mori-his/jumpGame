@@ -2,6 +2,7 @@ import { EventEmitter } from "events";
 import gameState from "../controls/gameState";
 import { loadFiles } from "../utils/loadQueue";
 import source from './gamePlaySource';
+import SelectRole from "./selectRole";
 import WeightsAlgorithm from "./weightsAlgorithm";
 
 const font = 'PingFangSC-Medium,-apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Source Han Sans", "Noto Sans CJK Sc", "Microsoft YaHei", "Microsoft Jhenghei", sans-serif'
@@ -95,29 +96,50 @@ export default class GamePlay extends EventEmitter {
             row: this.row,
             column: this.col
         });
+        // 选择人物
+        this.selectRole(loader);
+        
+    }
+    selectRole(loader) {
+        this.selectRole = new SelectRole(this.stage, { loader });
+        this.selectRole.once('selectedRole', (roleType) => {
+            this.selectRoleType = roleType;
+            this.init();
+        });
+    }
+
+    init() {
         // 增加背景以及跳台容器
-        this.renderBackground(loader);
+        this.renderBackground(this.loader);
         // 渲染倒计时
-        this.renderDistance(loader);
+        this.renderDistance(this.loader);
         // 渲染游戏人物
-        this.renderRole(loader);
+        this.renderRole(this.loader);
         // 连击效果
         this.renderBatterEffet();
         // 渲染初始化时的新手提示
         if (this.noviceTips) {
-          this.renderTips(loader);
+          this.renderTips(this.loader);
         } else {
           this.start()
         }
+        this.emit('play');
     }
     /**
      * 渲染人物角色
      */
     renderRole(loader) {
-        this.roleRight = loader.getResult('roleMaleRight');
-        this.roleLeft = loader.getResult('roleMaleLeft');
-        this.roleFastRight = loader.getResult('roleMaleFastRight')
-        this.roleFastLeft = loader.getResult('roleMaleFastLeft')
+        if (this.selectRoleType === 0) {
+            this.roleRight = loader.getResult('roleMaleRight');
+            this.roleLeft = loader.getResult('roleMaleLeft');
+            this.roleFastRight = loader.getResult('roleMaleFastRight');
+            this.roleFastLeft = loader.getResult('roleMaleFastLeft');
+        } else {
+            this.roleRight = loader.getResult('roleFemaleRight');
+            this.roleLeft = loader.getResult('roleFemaleLeft');
+            this.roleFastRight = loader.getResult('roleFemaleFastRight');
+            this.roleFastLeft = loader.getResult('roleFemaleFastLeft');
+        }
         this.role = new createjs.Bitmap(this.roleRight);
         this.role.y = this.rollBg.image.height - this.role.image.height;
         this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
@@ -365,6 +387,7 @@ export default class GamePlay extends EventEmitter {
         );
         this.showTips()
         this.stage.update()
+        window.localStorage.setItem('noviceTips', false)
     }
 
     start() {

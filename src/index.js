@@ -37,14 +37,14 @@ window.addEventListener('load', function() {
             gamePlay.on('loadProgress', (context, percentage) => {
                 gameLoading.toProgress(percentage);
             });
+            gamePlay.once('play', () => {
+                gameStartPanel.destory();
+                gamePlay.run();
+            })
         });
-
-        gameLoading.on('play', () => {
-            gameStartPanel.destory();
+        gameLoading.once('play', () => {
             gameLoading.destory();
-            gamePlay.run();
-            window.localStorage.setItem('noviceTips', false)
-        });
+        })
     }
 
     gameStartPanel.on('start', () => {

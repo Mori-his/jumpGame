@@ -1,8 +1,8 @@
 
 export default [
     {
-        id: 'background',
-        src: require('/src/assets/images/gamePlay/game_background.png').default,
+        id: 'selectRole',
+        src: require('/src/assets/images/gamePlay/selectRole/role_group.png').default,
         type: createjs.Types.IMAGE
     },
     {
@@ -13,16 +13,6 @@ export default [
     {
         id: 'rollBg',
         src: require('/src/assets/images/gamePlay/roll_bg.png').default,
-        type: createjs.Types.IMAGE
-    },
-    {
-        id: 'tree',
-        src: require('/src/assets/images/gamePlay/tree.png').default,
-        type: createjs.Types.IMAGE
-    },
-    {
-        id: 'woods',
-        src: require('/src/assets/images/woods.png').default,
         type: createjs.Types.IMAGE
     },
     {
@@ -323,6 +313,26 @@ export default [
     {
         id: 'roleMaleRight',
         src: require('/src/assets/images/gamePlay/role/role_male_right.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleFemaleFastLeft',
+        src: require('/src/assets/images/gamePlay/role/role_female_fast_left.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleFemaleFastRight',
+        src: require('/src/assets/images/gamePlay/role/role_female_fast_right.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleFemaleLeft',
+        src: require('/src/assets/images/gamePlay/role/role_female_left.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'roleFemaleRight',
+        src: require('/src/assets/images/gamePlay/role/role_female_right.png').default,
         type: createjs.Types.IMAGE
     },
     {
