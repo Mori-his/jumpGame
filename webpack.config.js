@@ -77,11 +77,13 @@ module.exports = {
                 minifyURLs: true,
             },
         }),
-        // new CopyPlugin({
-        //     patterns: [
-        //         { from: path.resolve(__dirname, 'src/assets'), to: path.resolve(outputPath, 'assets') },
-        //     ],
-        // }),
+        new CopyPlugin({
+            patterns: [
+                { from: path.resolve(__dirname, 'src/assets/images/ranking-list'), to: path.resolve(outputPath, 'assets/images/ranking-list') },
+                { from: path.resolve(__dirname, 'src/assets/javascript'), to: path.resolve(outputPath, 'assets/javascript') },
+                { from: path.resolve(__dirname, 'src/assets/css'), to: path.resolve(outputPath, 'assets/css') },
+            ],
+        }),
     ]
 };
 
