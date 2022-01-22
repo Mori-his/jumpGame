@@ -2780,7 +2780,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       override: true
     }).to({
       y
-    }, time, createjs.Ease.cubicInOut); // 给当前角色下降时每一次tick都会执行
+    }, time, createjs.Ease.sineInOut); // 给当前角色下降时每一次tick都会执行
 
     fallTween.addEventListener('change', () => {
       // const originY = -(this.rollBg.image.height - this.stage.canvas.height);
