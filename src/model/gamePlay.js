@@ -483,7 +483,7 @@ export default class GamePlay extends EventEmitter {
         const fallTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
-            }, time, createjs.Ease.cubicInOut);
+            }, time, createjs.Ease.sineInOut);
 
         // 给当前角色下降时每一次tick都会执行
         fallTween.addEventListener('change', () => {
