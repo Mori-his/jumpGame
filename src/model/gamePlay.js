@@ -522,7 +522,10 @@ export default class GamePlay extends EventEmitter {
                     const currBitmapName = objects[0]['@@name'];
                     if (this.currBatterType === null) {
                       this.currBatterType = currBitmapName
-                    } else if (this.currBatterType === currBitmapName) {
+                    } else if (
+                        this.currBatterType === currBitmapName
+                        || objects[0].__type === 'time'
+                    ) {
                         this.currBatterNum++;
                     } else {
                         this.currBatterNum = 1;
