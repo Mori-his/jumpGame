@@ -2516,7 +2516,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     }
 
     this.role = new createjs.Bitmap(this.roleRight);
-    this.role.y = this.rollBg.image.height - this.role.image.height;
+    this.role.y = this.rollBg.image.height / 2 - this.role.image.height;
     this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
     this.jumpRoleX = this.role.x;
     this.jumpRoleY = this.role.y;
@@ -2527,19 +2527,17 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
 
   renderBackground(loader) {
     this.fixedTopBg = new createjs.Bitmap(loader.getResult('fixedTopBg'));
+    this.fixedTopBg.scale = 0.5;
     this.fixedTopBg.x = 0;
     this.fixedTopBg.y = 0;
     this.rollContainer = new createjs.Container();
     this.rollBg = new createjs.Bitmap(loader.getResult('rollBg'));
-    this.rollTree = new createjs.Bitmap(loader.getResult('tree'));
+    this.rollBg.scale = 0.5;
     this.rollBg.x = 0;
-    this.rollTree.x = 0;
     this.rollBg.y = 0;
-    this.rollTree.y = 0;
-    this.rollContainer.y = -(this.rollBg.image.height - this.stage.canvas.height);
-    this.rollTree.regX = 25;
+    this.rollContainer.y = -(this.rollBg.image.height / 2 - this.stage.canvas.height);
     this.computedGrid();
-    this.renderJump(this.rollBg.image.height - this.renderHeight);
+    this.renderJump(this.rollBg.image.height / 2 - this.renderHeight);
     this.backgroundContainer.addChild(this.rollBg); // 绘制背景以及跳台容器
 
     this.rollContainer.addChild(this.backgroundContainer, this.jumpContainer); // 给滚动容器合固定容器组合
@@ -2933,10 +2931,10 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   renderDepthJump() {
     const cloneRollBg = this.rollBg.clone();
     cloneRollBg.x = 0;
-    cloneRollBg.y = -(this.rollBg.image.height * this.rollCount); // 增加循环背景
+    cloneRollBg.y = -(this.rollBg.image.height / 2 * this.rollCount); // 增加循环背景
 
     this.backgroundContainer.addChild(cloneRollBg);
-    const jumpY = -(this.rollBg.image.height * (this.rollCount - 1) + this.renderHeight); // 循环跳台
+    const jumpY = -(this.rollBg.image.height / 2 * (this.rollCount - 1) + this.renderHeight); // 循环跳台
 
     this.renderJump(jumpY); // 给角色置顶
 
@@ -2993,7 +2991,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       y
     }, time, createjs.Ease.linear);
     bgTween.addEventListener('change', () => {
-      if (this.rollContainer.y >= this.rollBg.image.height * (this.rollCount - 1)) {
+      if (this.rollContainer.y >= this.rollBg.image.height / 2 * (this.rollCount - 1)) {
         this.renderDepthJump();
       } // 增加米数
 
@@ -3034,7 +3032,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     } = this.loader.getResult('jump_red');
     this.renderWidth = width;
     this.renderHeight = height;
-    this.row = Math.floor(this.rollBg.image.height / height);
+    this.row = Math.floor(this.rollBg.image.height / 2 / height);
     this.col = Math.floor((canvasWidth - this.padding) / width);
   }
 
@@ -5208,7 +5206,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "67cfd5157d1af56c65b9fb6fbe84b52f.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "f31804e537df41b13614094f51583019.png");
 
 /***/ }),
 
@@ -5508,7 +5506,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "5026c03882db9162d018605e393adaeb.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "54139c6621eff5e05e1df481c6076c16.png");
 
 /***/ }),
 
