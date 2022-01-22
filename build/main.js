@@ -2361,6 +2361,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     this.backgroundContainer = new createjs.Container();
     this.jumpContainer = new createjs.Container();
     this.loadSource();
+    this.scaleX = this.stage.canvas.width / 375;
   }
 
   keydown(event) {
@@ -2527,17 +2528,18 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
 
   renderBackground(loader) {
     this.fixedTopBg = new createjs.Bitmap(loader.getResult('fixedTopBg'));
-    this.fixedTopBg.scale = 0.5;
+    this.rollBg = new createjs.Bitmap(loader.getResult('rollBg'));
+    this.scaleX = this.stage.canvas.width / this.rollBg.image.width;
+    this.fixedTopBg.scale = this.scaleX;
     this.fixedTopBg.x = 0;
     this.fixedTopBg.y = 0;
     this.rollContainer = new createjs.Container();
-    this.rollBg = new createjs.Bitmap(loader.getResult('rollBg'));
-    this.rollBg.scale = 0.5;
+    this.rollBg.scale = this.scaleX;
     this.rollBg.x = 0;
     this.rollBg.y = 0;
-    this.rollContainer.y = -(this.rollBg.image.height / 2 - this.stage.canvas.height);
+    this.rollContainer.y = -(this.rollBg.image.height * this.scaleX - this.stage.canvas.height);
     this.computedGrid();
-    this.renderJump(this.rollBg.image.height / 2 - this.renderHeight);
+    this.renderJump(this.rollBg.image.height * this.scaleX - this.renderHeight);
     this.backgroundContainer.addChild(this.rollBg); // 绘制背景以及跳台容器
 
     this.rollContainer.addChild(this.backgroundContainer, this.jumpContainer); // 给滚动容器合固定容器组合
@@ -2931,10 +2933,10 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   renderDepthJump() {
     const cloneRollBg = this.rollBg.clone();
     cloneRollBg.x = 0;
-    cloneRollBg.y = -(this.rollBg.image.height / 2 * this.rollCount); // 增加循环背景
+    cloneRollBg.y = -(this.rollBg.image.height * this.scaleX * this.rollCount); // 增加循环背景
 
     this.backgroundContainer.addChild(cloneRollBg);
-    const jumpY = -(this.rollBg.image.height / 2 * (this.rollCount - 1) + this.renderHeight); // 循环跳台
+    const jumpY = -(this.rollBg.image.height * this.scaleX * (this.rollCount - 1) + this.renderHeight); // 循环跳台
 
     this.renderJump(jumpY); // 给角色置顶
 
@@ -2991,7 +2993,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       y
     }, time, createjs.Ease.linear);
     bgTween.addEventListener('change', () => {
-      if (this.rollContainer.y >= this.rollBg.image.height / 2 * (this.rollCount - 1)) {
+      if (this.rollContainer.y >= this.rollBg.image.height * this.scaleX * (this.rollCount - 1)) {
         this.renderDepthJump();
       } // 增加米数
 
@@ -3032,7 +3034,8 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     } = this.loader.getResult('jump_red');
     this.renderWidth = width;
     this.renderHeight = height;
-    this.row = Math.floor(this.rollBg.image.height / 2 / height);
+    this.row = Math.floor(this.rollBg.image.height * this.scaleX / height);
+    console.log(this.row);
     this.col = Math.floor((canvasWidth - this.padding) / width);
   }
 
@@ -5913,8 +5916,8 @@ window.addEventListener('load', function () {
   const maxWidth = 375;
   const maxHeight = 812;
   const stage = new createjs.Stage('mainCanvas');
-  stage.canvas.width = Math.min(window.innerWidth, maxWidth);
-  stage.canvas.height = Math.min(window.innerHeight, maxHeight);
+  stage.canvas.width = window.innerWidth;
+  stage.canvas.height = window.innerHeight;
   createjs.Ticker.timingMode = createjs.Ticker.RAF_SYNCHED;
   createjs.Ticker.framerate = 60;
   createjs.Ticker.addEventListener('tick', stage);
