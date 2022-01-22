@@ -2285,7 +2285,7 @@ class GameLoading extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     createjs.Tween.get(this.progressCableCar, {
       override: true
     }).to({
-      x: progressWidth + this.progressCableCar.image.width
+      x: progressWidth + this.progressCableCar.image.width - 5
     }, 500, createjs.Ease.quadIn);
   }
 
@@ -2597,7 +2597,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     const batterAddIcon = new createjs.Bitmap(loader.getResult('batterAddIcon'));
     batterAddIcon.outline = 1;
     batterAddIcon.x = batterBg.x + 15;
-    batterAddIcon.y = batterBg.y + 14;
+    batterAddIcon.y = batterBg.y + 16;
     this.volumeOpen = new createjs.Bitmap(loader.getResult('volume_open'));
     this.volumeClose = new createjs.Bitmap(loader.getResult('volume_close'));
     this.volumeOpen.x = this.stage.canvas.width - this.volumeOpen.image.width - 19;
@@ -3671,10 +3671,6 @@ class GameStartPanel extends events__WEBPACK_IMPORTED_MODULE_2__.EventEmitter {
     id: 'startTips1',
     src: (__webpack_require__(/*! ../../src/assets/images/start_tips_1.png */ "./src/assets/images/start_tips_1.png")["default"]),
     type: createjs.Types.IMAGE
-  }, {
-    id: 'startTips2',
-    src: (__webpack_require__(/*! ../../src/assets/images/start_tips_2.png */ "./src/assets/images/start_tips_2.png")["default"]),
-    type: createjs.Types.IMAGE
   }];
 
   constructor(stage) {
@@ -3699,11 +3695,9 @@ class GameStartPanel extends events__WEBPACK_IMPORTED_MODULE_2__.EventEmitter {
     this.homeBG.scaleX = scale.scaleX;
     this.homeBG.scaleY = scale.scaleY;
     this.startTips1 = new createjs.Bitmap(loader.getResult('startTips1'));
-    this.startTips2 = new createjs.Bitmap(loader.getResult('startTips2'));
-    this.startTips1.x = (canvasRect.width - this.startTips1.image.width) / 2;
-    this.startTips2.x = (canvasRect.width - this.startTips2.image.width) / 2;
-    this.startTips1.y = canvasRect.height - this.startTips1.image.height - 155;
-    this.startTips2.y = canvasRect.height - this.startTips1.image.height - 121;
+    this.startTips1.scale = 0.5;
+    this.startTips1.x = (canvasRect.width - this.startTips1.image.width * 0.5) / 2;
+    this.startTips1.y = canvasRect.height - this.startTips1.image.height * 0.5 - 130;
     this.startBtn = new createjs.Bitmap(loader.getResult('startBtn'));
     this.startBtn.x = (canvasRect.width - this.startBtn.image.width) / 2;
     this.startBtn.y = canvasRect.height - this.startBtn.image.height - 49;
@@ -3711,12 +3705,14 @@ class GameStartPanel extends events__WEBPACK_IMPORTED_MODULE_2__.EventEmitter {
       this.emit('start', this);
     });
     this.iceRole = new createjs.Bitmap(loader.getResult('iceRole'));
+    this.iceRole.scale = 0.5;
     this.iceRole.x = 20;
-    this.iceRole.y = canvasRect.height - this.iceRole.image.height - 199;
+    this.iceRole.y = canvasRect.height - this.iceRole.image.height * 0.5 - 199;
     this.snowRole = new createjs.Bitmap(loader.getResult('snowRole'));
-    this.snowRole.x = (canvasRect.width - this.snowRole.image.width) / 2 + 77;
-    this.snowRole.y = canvasRect.height - this.snowRole.image.height - 228;
-    this.container.addChild(this.homeBG, this.startBtn, this.iceRole, this.snowRole, this.startTips1, this.startTips2);
+    this.snowRole.scale = 0.5;
+    this.snowRole.x = (canvasRect.width - this.snowRole.image.width * 0.5) / 2 + 77;
+    this.snowRole.y = canvasRect.height - this.snowRole.image.height * 0.5 - 228;
+    this.container.addChild(this.homeBG, this.startBtn, this.iceRole, this.snowRole, this.startTips1);
     this.animateRole();
     this.stage.addChild(this.container);
     this.stage.update();
@@ -5599,7 +5595,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "869b8afc640a30a721d479510679010b.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "0c6199fbcb9c47c1d9a87e093314af17.png");
 
 /***/ }),
 
@@ -5689,7 +5685,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "8907a1f805360c489fc021f9950cb31f.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "bcf5e1d9b9465ef59a2df50ed42f0c3f.png");
 
 /***/ }),
 
@@ -5734,22 +5730,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "f33716d887575d4ef1ea777a6b069ae1.png");
-
-/***/ }),
-
-/***/ "./src/assets/images/start_tips_2.png":
-/*!********************************************!*\
-  !*** ./src/assets/images/start_tips_2.png ***!
-  \********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "d25132db7930557c1cdc1ba8d744a01d.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "caa5958a484b3701737d0bff00d5695a.png");
 
 /***/ }),
 
@@ -5932,7 +5913,6 @@ window.addEventListener('load', function () {
     gameLoading = new _model_gameLoding__WEBPACK_IMPORTED_MODULE_1__["default"](stage);
     gameLoading.on('loaded', () => {
       const noviceTips = window.localStorage.getItem('noviceTips');
-      console.log('noviceTips:', noviceTips);
       gamePlay = new _model_gamePlay__WEBPACK_IMPORTED_MODULE_2__["default"](stage, {
         noviceTips: noviceTips !== 'false'
       });
