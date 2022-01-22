@@ -4,14 +4,16 @@ const CopyPlugin = require('copy-webpack-plugin');
 
 
 const env = process.env.NODE_ENV || 'development';
-const outputPath = path.resolve('./dist');
+
+const outputPath = path.resolve('./build');
+
 module.exports = {
     context: __dirname,
     mode: env,
     entry: './src/index.js',
     output: {
         filename: '[name].js',
-        path: path.resolve('./dist')
+        path: outputPath
     },
     devtool: 'cheap-module-source-map',
     devServer: {
