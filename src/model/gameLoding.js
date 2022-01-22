@@ -113,7 +113,7 @@ export default class GameLoading extends EventEmitter {
             });
         createjs.Tween.get(this.progressCableCar, { override: true })
             .to({
-                x: progressWidth + this.progressCableCar.image.width
+                x: progressWidth + this.progressCableCar.image.width - 5
             }, 500, createjs.Ease.quadIn);
     }
 

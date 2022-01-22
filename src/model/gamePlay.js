@@ -265,7 +265,7 @@ export default class GamePlay extends EventEmitter {
         const batterAddIcon = new createjs.Bitmap(loader.getResult('batterAddIcon'));
         batterAddIcon.outline = 1;
         batterAddIcon.x = batterBg.x + 15;
-        batterAddIcon.y = batterBg.y + 14;
+        batterAddIcon.y = batterBg.y + 16;
 
         this.volumeOpen = new createjs.Bitmap(loader.getResult('volume_open'));
         this.volumeClose = new createjs.Bitmap(loader.getResult('volume_close'));

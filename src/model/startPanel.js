@@ -43,11 +43,6 @@ export default class GameStartPanel extends EventEmitter {
             src: require('/src/assets/images/start_tips_1.png').default,
             type: createjs.Types.IMAGE
         },
-        {
-            id: 'startTips2',
-            src: require('/src/assets/images/start_tips_2.png').default,
-            type: createjs.Types.IMAGE
-        }
     ]
     constructor(stage) {
         super();
@@ -74,11 +69,9 @@ export default class GameStartPanel extends EventEmitter {
         this.homeBG.scaleY = scale.scaleY;
 
         this.startTips1 = new createjs.Bitmap(loader.getResult('startTips1'));
-        this.startTips2 = new createjs.Bitmap(loader.getResult('startTips2'));
-        this.startTips1.x = (canvasRect.width - this.startTips1.image.width) / 2;
-        this.startTips2.x = (canvasRect.width - this.startTips2.image.width) / 2;
-        this.startTips1.y = canvasRect.height - this.startTips1.image.height - 155;
-        this.startTips2.y = canvasRect.height - this.startTips1.image.height - 121;
+        this.startTips1.scale = 0.5;
+        this.startTips1.x = (canvasRect.width - this.startTips1.image.width * 0.5) / 2;
+        this.startTips1.y = canvasRect.height - this.startTips1.image.height * 0.5 - 130;
 
         this.startBtn = new createjs.Bitmap(loader.getResult('startBtn'));
         this.startBtn.x = (canvasRect.width - this.startBtn.image.width) / 2;
@@ -88,12 +81,14 @@ export default class GameStartPanel extends EventEmitter {
         });
 
         this.iceRole = new createjs.Bitmap(loader.getResult('iceRole'));
+        this.iceRole.scale = 0.5;
         this.iceRole.x = 20;
-        this.iceRole.y = canvasRect.height - this.iceRole.image.height - 199;
+        this.iceRole.y = canvasRect.height - this.iceRole.image.height * 0.5 - 199;
 
         this.snowRole = new createjs.Bitmap(loader.getResult('snowRole'))
-        this.snowRole.x = (canvasRect.width - this.snowRole.image.width) / 2 + 77;
-        this.snowRole.y = canvasRect.height - this.snowRole.image.height - 228;
+        this.snowRole.scale = 0.5;
+        this.snowRole.x = (canvasRect.width - this.snowRole.image.width * 0.5) / 2 + 77;
+        this.snowRole.y = canvasRect.height - this.snowRole.image.height * 0.5 - 228;
 
         this.container.addChild(
             this.homeBG,
@@ -101,7 +96,6 @@ export default class GameStartPanel extends EventEmitter {
             this.iceRole,
             this.snowRole,
             this.startTips1,
-            this.startTips2
         );
 
         this.animateRole();
