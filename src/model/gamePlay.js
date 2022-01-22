@@ -85,11 +85,16 @@ export default class GamePlay extends EventEmitter {
             moveX = maxX;
         }
         let offsetX = this.renderWidth / 2;
+        clearTimeout(this.moveXTimer);
         if (this.role.x > moveX) {
             offsetX = -offsetX;
-            this.role.image = this.rise ? this.roleLeft : this.roleFastLeft;
+            this.moveXTimer = setTimeout(() => {
+                this.role.image = this.rise ? this.roleLeft : this.roleFastLeft;
+            }, 100)
         } else {
-            this.role.image = this.rise ? this.roleRight : this.roleFastRight;
+            this.moveXTimer = setTimeout(() => {
+                this.role.image = this.rise ? this.roleRight : this.roleFastRight;
+            })
         }
         this.moveRoleX(moveX + offsetX);
     }
@@ -447,7 +452,7 @@ export default class GamePlay extends EventEmitter {
         createjs.Tween.get(this.role)
             .to({
                 x,
-            }, 300, createjs.Ease.linear);
+            }, 600, createjs.Ease.linear);
     }
 
     jumpRole(
