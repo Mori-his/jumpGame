@@ -254,7 +254,7 @@ export default class GamePlay extends EventEmitter {
             );
         }
 
-        const batterAddIcon = new createjs.Text('+', `bold 18px ${font}`, '#004786');
+        const batterAddIcon = new createjs.Bitmap(loader.getResult('batterAddIcon'));
         batterAddIcon.outline = 1;
         batterAddIcon.x = batterBg.x + 15;
         batterAddIcon.y = batterBg.y + 14;
@@ -506,6 +506,9 @@ export default class GamePlay extends EventEmitter {
                 let objects = this.jumpContainer.getObjectsUnderPoint(points[i].x, points[i].y);
                 objects = objects.filter((object) => object.name === 'jump')
                 if (objects.length > 0) {
+                    if (objects[0].__type === 'time') {
+                        this.currTime += 10;
+                    }
                     createjs.Tween.get(objects[0]).to({
                         alpha: 0
                     }, 300, createjs.Ease.linear)
@@ -616,6 +619,16 @@ export default class GamePlay extends EventEmitter {
                     currBitmap.x = startX;
                     currBitmap.y = startY;
                     currBitmap.name = 'jump';
+                    if (col[c].bitmap === 'jump_time') {
+                        currBitmap.__type = 'time';
+                        createjs.Tween.get(currBitmap, { loop: true })
+                            .to({
+                                scale: 1.1
+                            }, 200, createjs.Ease.linear)
+                            .to({
+                                scale: 1,
+                            }, 200, createjs.Ease.linear);
+                    }
                     currBitmap['@@name'] = col[c].bitmap;
                     this.jumpContainer.addChild(currBitmap);
                 }

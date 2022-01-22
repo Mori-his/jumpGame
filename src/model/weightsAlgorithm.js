@@ -8,7 +8,9 @@ export default class WeightsAlgorithm {
 
     stepWeight = 5;
     maxWeight = 100;
-    maxColNum = 2
+    maxColNum = 2;
+    timeRowN = 30;
+    rowNum = 0;
 
     constructor(stage, {row, column, loader}) {
         this.stage = stage;
@@ -102,7 +104,12 @@ export default class WeightsAlgorithm {
                     }
                 })
             }
+            if (this.rowNum % this.timeRowN <= 0) {
+                const random = this.random(this.colors.length - 1);
+                row[random].bitmap = 'jump_time';
+            }
             prevRow = row;
+            this.rowNum++;
         });
         return JSON.parse(JSON.stringify(this.matrix));
     }

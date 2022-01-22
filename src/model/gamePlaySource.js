@@ -86,6 +86,11 @@ export default [
         type: createjs.Types.IMAGE
     },
     {
+        id: 'jump_time',
+        src: require('/src/assets/images/gamePlay/jump_time.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
         id: 'overtime_bg',
         src: require('/src/assets/images/gamePlay/overtime_bg.png').default,
         type: createjs.Types.IMAGE
@@ -113,6 +118,11 @@ export default [
     {
         id: 'volume_open',
         src: require('/src/assets/images/gamePlay/volume_open.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
+        id: 'batterAddIcon',
+        src: require('/src/assets/images/gamePlay/batterAddIcon.png').default,
         type: createjs.Types.IMAGE
     },
     {
