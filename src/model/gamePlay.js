@@ -62,13 +62,28 @@ export default class GamePlay extends EventEmitter {
     }
 
     mouseMove(event) {
-        this.moveRoleX(event.offsetX);
+        const minX = this.padding / 2;
+        const maxX = this.stage.canvas.width - minX;
+        let moveX = event.offsetX;
+        if (moveX < minX) {
+            moveX = minX;
+        } else if (moveX > maxX) {
+            moveX = maxX;
+        }
+        this.moveRoleX(moveX);
     }
 
     touchStart(event) {
         const { x } = this.stage.canvas.getBoundingClientRect();
         const touch = event.touches[0];
-        const moveX = touch.clientX - x
+        let moveX = touch.clientX - x;
+        const minX = this.padding / 2;
+        const maxX = this.stage.canvas.width - minX;
+        if (moveX < minX) {
+            moveX = minX;
+        } else if (moveX > maxX) {
+            moveX = maxX;
+        }
         let offsetX = this.renderWidth / 2;
         if (this.role.x > moveX) {
             offsetX = -offsetX;
@@ -83,10 +98,20 @@ export default class GamePlay extends EventEmitter {
         if (!this.role) return
         let nextX = this.role.x;
         if (this.leftKeyDown) {
-            nextX = nextX - 3;
+            const minX = this.padding / 2;
+            if (nextX < minX) {
+                nextX = minX;
+            } else {
+                nextX = nextX - 3;
+            }
         }
         if (this.rightKeyDown) {
-            nextX = nextX + 3;
+            const maxX = this.stage.canvas.width - this.padding / 2;
+            if (nextX > maxX) {
+                nextX = maxX
+            } else {
+                nextX = nextX + 3;
+            }
         }
         this.role.x = nextX;
     }
@@ -295,6 +320,8 @@ export default class GamePlay extends EventEmitter {
         this.batter2Img = this.loader.getResult('batter_2');
         this.batter3Img = this.loader.getResult('batter_3');
         this.batter4Img = this.loader.getResult('batter_4');
+        // 加速金句 更快 更高 更强！
+        this.speedQuotes = new createjs.Bitmap(this.loader.getResult('speed_quotes'));
         this.batterContainer = new createjs.Bitmap(this.batter2Img);
         this.batterContainer.x = (this.stage.canvas.width - this.batter2Img.width) / 2;
         this.batterContainer.y = 100;
@@ -534,6 +561,18 @@ export default class GamePlay extends EventEmitter {
                             clearTimeout(this.batterEffectTimer);
                             this.removeBatterContainer();
                         });
+                        // 金句动画
+                        this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
+                        this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
+                        this.speedQuotes.alpha = 1;
+                        this.stage.addChild(this.speedQuotes);
+                        createjs.Tween.get(this.speedQuotes)
+                            .to({
+                                y: -this.speedQuotes.image.height,
+                                alpha: 0
+                            }, 2000, createjs.Ease.quadIn).call(() => {
+                                this.stage.removeChild(this.speedQuotes);
+                            });
                         this.moveBackground(
                             this.rollContainer.y + this.renderHeight * 15,
                             3000

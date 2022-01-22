@@ -2,10 +2,9 @@ import GameStartPanel from './model/startPanel';
 import GameLoading from './model/gameLoding';
 import GamePlay from './model/gamePlay';
 import { GameScore } from './model/gameScore';
-import gameState from './controls/gameState'
-import WeightsAlgorithm from './model/weightsAlgorithm';
+import gameState from './controls/gameState';
 
-import './assets/css/ranking-list.css'
+import './assets/css/ranking-list.css';
 
 
 window.addEventListener('load', function() {

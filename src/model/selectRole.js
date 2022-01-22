@@ -125,7 +125,9 @@ export default class SelectRole extends EventEmitter {
     }
 
     getSprite(type) {
-        return new createjs.Sprite(this.spriteSheet, type);
+        const sprite = new createjs.Sprite(this.spriteSheet, type);
+        sprite.scale = 0.5;
+        return sprite;
     }
 
     initSpriteSheet() {
@@ -133,12 +135,18 @@ export default class SelectRole extends EventEmitter {
         this.spriteSheet = new createjs.SpriteSheet({
             images: [ image ],
             frames: [
-                [0, 0, 120, 126],
-                [120, 0, 120, 126],
-                [242, 0, 119, 130],
-                [361, 0, 122, 132],
-                [0, 132, 168, 62],
-                [168, 153, 209, 21],
+                // [0, 0, 120, 126],
+                // [120, 0, 120, 126],
+                // [242, 0, 119, 130],
+                // [361, 0, 122, 132],
+                // [0, 132, 168, 62],
+                // [168, 153, 209, 21],
+                [0, 0, 240, 252],
+                [240, 0, 244, 256],
+                [484, 0, 238, 260],
+                [722, 0, 244, 264],
+                [0, 275, 335, 123],
+                [335, 317, 418, 40]
             ],
             animations: {
                 iceRoleDefault: [0],

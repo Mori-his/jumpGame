@@ -36,7 +36,7 @@ export class GameScore {
         const btnRestart = new createjs.Bitmap(loader.getResult('btnRestart'));
         btnRestart.x = (this.stage.canvas.width - btnRestart.image.width) / 2;
         btnRestart.y = this.stage.canvas.height - btnRestart.image.height - 69;
-        btnShare.x = (this.stage.canvas.width - btnShare.image.width) / 2 + 5;
+        btnShare.x = (this.stage.canvas.width - btnShare.image.width) / 2;
         btnShare.y = btnRestart.y - btnShare.image.height - 13;
 
         btnRestart.addEventListener('click', () => {
@@ -61,7 +61,7 @@ export class GameScore {
         const scoreTitle1 = new createjs.Text('你的滑雪距离是', `bold 20px ${font}`, '#fff');
         scoreTitle1.x = scorePanel.x + 65;
         scoreTitle1.y = scorePanel.y + 77;
-        const scoreNum = new createjs.Text(`${this.score}米`, `bold 56px ${font}`, '#fff');
+        const scoreNum = new createjs.Text(`${this.score}`, `bold 56px ${font}`, '#fff');
         scoreNum.lineHeight = 81;
         const { width } = scoreNum.getBounds();
         scoreNum.x = (this.stage.canvas.width - width) / 2;
