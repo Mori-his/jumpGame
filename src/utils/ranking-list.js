@@ -7,6 +7,21 @@ const vm = new Vue({
     myResult: 0,
     resultType: 1
   },
+
+  computed: {
+    myRanking() {
+      const { list, myResult } = this
+
+      const rankingList = list.map(item => {
+        return item.result
+      })
+
+      console.log('ranking:', rankingList.indexOf(myResult))
+
+      return rankingList.indexOf(myResult)
+    }
+  },
+
   methods: {
     onRestart() {
       window.location.reload()

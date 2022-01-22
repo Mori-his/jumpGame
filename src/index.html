@@ -169,6 +169,7 @@
     <script src="./assets/javascript/createjs.min.js"></script>
 </head>
 <body>
+
     <canvas id="mainCanvas"></canvas>
     <div
       id="ranking-list"
@@ -194,7 +195,10 @@
         </div>
         <img src="./assets/images/ranking-list/my-result.png" class="ranking-list__my--result"/>
         <div class="ranking-list__content--item" style="margin-top: 0;">
-          <img src="./assets/images/ranking-list/my-result-icon.png" class="ranking-list__my--icon"/>
+          <img src="./assets/images/ranking-list/my-result-icon.png" class="ranking-list__my--icon" v-if="myRanking === -1" />
+            <div class="ranking-list__content--icon" :class="[`ranking-list__content--icon-${myRanking}`]" v-else>
+              {{ myRanking > 2 ? `${myRanking + 1}th` : '' }}
+            </div>
           <div class="ranking-list__content--result">
             <img src="./assets/images/ranking-list/content-result.png" class="ranking-list__content--result-icon" />
             <span>{{ myResult }}</span>
