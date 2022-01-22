@@ -71,6 +71,11 @@
         left: 50%;
         top: 0;
         transform: translate(-50%, 0);
+      }
+      .ranking-list-0 {
+        background-image: url('./assets/images/ranking-list/bg-0.png');
+      }
+      .ranking-list-1 {
         background-image: url('./assets/images/ranking-list/bg-1.png');
       }
       .ranking-list__title {
@@ -81,13 +86,19 @@
       .ranking-list__content {
         width: 330px;
         height: 468px;
-        background-image: url('./assets/images/ranking-list/content.png');
+        background-image: url('./assets/images/ranking-list/content-0.png');
         background-repeat: no-repeat;
         background-position: center;
         position: absolute;
         top: 230px;
         left: 50%;
         transform: translate(-50%, 0);
+      }
+      .ranking-list__content-0 {
+        background-image: url('./assets/images/ranking-list/content-0.png');
+      }
+      .ranking-list__content-1 {
+        background-image: url('./assets/images/ranking-list/content-1.png');
       }
       .ranking-list__content--title {
         margin-top: 76px;
@@ -138,6 +149,12 @@
       .ranking-list__content--icon-2 {
         background-image: url('./assets/images/ranking-list/ranking-3.png');
       }
+      .ranking-list__my--result {
+        width: 240px;
+      }
+      .ranking-list__my--icon {
+        width: 55px;
+      }
       .ranking-list__button {
         width: 168px;
         height: 62px;
@@ -148,16 +165,19 @@
       }
     </style>
     <script type="text/javascript" src="./assets/javascript/vue.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./assets/javascript/createjs.min.js"></script>
 </head>
 <body>
     <canvas id="mainCanvas"></canvas>
     <div
       id="ranking-list"
-      style="display: none;"
+      v-if="myResult"
+      :class="[`ranking-list-${resultType}`]"
       >
-      <img src="./assets/images/ranking-list/title-1.png" class="ranking-list__title" />
-      <div class="ranking-list__content">
+      <img src="./assets/images/ranking-list/title-0.png" class="ranking-list__title" v-if="resultType === 0"/>
+      <img src="./assets/images/ranking-list/title-1.png" class="ranking-list__title" v-if="resultType === 1"/>
+      <div class="ranking-list__content" :class="[`ranking-list__content-${resultType}`]">
         <img src="./assets/images/ranking-list/content-title.png" class="ranking-list__content--title" />
         <div class="ranking-list__content--introduce">
           <div class="ranking-list__content--text">排名</div>
@@ -169,27 +189,19 @@
           </div>
           <div class="ranking-list__content--result">
             <img src="./assets/images/ranking-list/content-result.png" class="ranking-list__content--result-icon" />
-            <span>{{ item }}</span>
+            <span>{{ item.result }}</span>
           </div>
         </div>
-        <img src="./assets/images/ranking-list/my-result.png" />
+        <img src="./assets/images/ranking-list/my-result.png" class="ranking-list__my--result"/>
         <div class="ranking-list__content--item" style="margin-top: 0;">
-          <div class="ranking-list__content--icon">未上</div>
+          <img src="./assets/images/ranking-list/my-result-icon.png" class="ranking-list__my--icon"/>
           <div class="ranking-list__content--result">
             <img src="./assets/images/ranking-list/content-result.png" class="ranking-list__content--result-icon" />
-            <span>15</span>
+            <span>{{ myResult }}</span>
           </div>
         </div>
       </div>
-      <img src="./assets/images/ranking-list/restart.png" class="ranking-list__button" />
+      <img src="./assets/images/ranking-list/restart.png" class="ranking-list__button" @click="onRestart" />
     </div>
 </body>
-<script type="text/javascript">
-  const vm = new Vue({
-    el: '#ranking-list',
-    data: {
-      list: ['789', '677', '588', '241', '125']
-    }
-  })
-</script>
 </html>

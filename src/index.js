@@ -6,6 +6,19 @@ import gameState from './controls/gameState';
 
 import './assets/css/ranking-list.css';
 
+// ranking-list
+import { renderRankingList, save } from './utils/ranking-list'
+
+// 调用示例
+// setTimeout(() => {
+//   console.log('查询成绩，执行了')
+//   renderRankingList(500, 0)
+// }, 3000)
+// 调用示例
+// setTimeout(() => {
+//   console.log('保存成绩，执行了')
+//   save(parseInt(475 * (Math.random() + 0)))
+// }, 1000)
 
 window.addEventListener('load', function() {
     const maxWidth = 375;
