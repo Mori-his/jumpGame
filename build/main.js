@@ -234,7 +234,17 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   }
 
   mouseMove(event) {
-    this.moveRoleX(event.offsetX);
+    const minX = this.padding / 2;
+    const maxX = this.stage.canvas.width - minX;
+    let moveX = event.offsetX;
+
+    if (moveX < minX) {
+      moveX = minX;
+    } else if (moveX > maxX) {
+      moveX = maxX;
+    }
+
+    this.moveRoleX(moveX);
   }
 
   touchStart(event) {
@@ -242,7 +252,16 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       x
     } = this.stage.canvas.getBoundingClientRect();
     const touch = event.touches[0];
-    const moveX = touch.clientX - x;
+    let moveX = touch.clientX - x;
+    const minX = this.padding / 2;
+    const maxX = this.stage.canvas.width - minX;
+
+    if (moveX < minX) {
+      moveX = minX;
+    } else if (moveX > maxX) {
+      moveX = maxX;
+    }
+
     let offsetX = this.renderWidth / 2;
 
     if (this.role.x > moveX) {
@@ -260,11 +279,23 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     let nextX = this.role.x;
 
     if (this.leftKeyDown) {
-      nextX = nextX - 3;
+      const minX = this.padding / 2;
+
+      if (nextX < minX) {
+        nextX = minX;
+      } else {
+        nextX = nextX - 3;
+      }
     }
 
     if (this.rightKeyDown) {
-      nextX = nextX + 3;
+      const maxX = this.stage.canvas.width - this.padding / 2;
+
+      if (nextX > maxX) {
+        nextX = maxX;
+      } else {
+        nextX = nextX + 3;
+      }
     }
 
     this.role.x = nextX;
@@ -404,7 +435,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       }));
     }
 
-    const batterAddIcon = new createjs.Text('+', `bold 18px ${font}`, '#004786');
+    const batterAddIcon = new createjs.Bitmap(loader.getResult('batterAddIcon'));
     batterAddIcon.outline = 1;
     batterAddIcon.x = batterBg.x + 15;
     batterAddIcon.y = batterBg.y + 14;
@@ -456,7 +487,9 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   renderBatterEffet() {
     this.batter2Img = this.loader.getResult('batter_2');
     this.batter3Img = this.loader.getResult('batter_3');
-    this.batter4Img = this.loader.getResult('batter_4');
+    this.batter4Img = this.loader.getResult('batter_4'); // 加速金句 更快 更高 更强！
+
+    this.speedQuotes = new createjs.Bitmap(this.loader.getResult('speed_quotes'));
     this.batterContainer = new createjs.Bitmap(this.batter2Img);
     this.batterContainer.x = (this.stage.canvas.width - this.batter2Img.width) / 2;
     this.batterContainer.y = 100;
@@ -614,6 +647,10 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
         objects = objects.filter(object => object.name === 'jump');
 
         if (objects.length > 0) {
+          if (objects[0].__type === 'time') {
+            this.currTime += 10;
+          }
+
           createjs.Tween.get(objects[0]).to({
             alpha: 0
           }, 300, createjs.Ease.linear).call(() => {
@@ -660,6 +697,17 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
             this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000).call(() => {
               clearTimeout(this.batterEffectTimer);
               this.removeBatterContainer();
+            }); // 金句动画
+
+            this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
+            this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
+            this.speedQuotes.alpha = 1;
+            this.stage.addChild(this.speedQuotes);
+            createjs.Tween.get(this.speedQuotes).to({
+              y: -this.speedQuotes.image.height,
+              alpha: 0
+            }, 2000, createjs.Ease.quadIn).call(() => {
+              this.stage.removeChild(this.speedQuotes);
             });
             this.moveBackground(this.rollContainer.y + this.renderHeight * 15, 3000);
             this.currBatterNum = 0;
@@ -698,6 +746,18 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
           currBitmap.x = startX;
           currBitmap.y = startY;
           currBitmap.name = 'jump';
+
+          if (col[c].bitmap === 'jump_time') {
+            currBitmap.__type = 'time';
+            createjs.Tween.get(currBitmap, {
+              loop: true
+            }).to({
+              scale: 1.1
+            }, 200, createjs.Ease.linear).to({
+              scale: 1
+            }, 200, createjs.Ease.linear);
+          }
+
           currBitmap['@@name'] = col[c].bitmap;
           this.jumpContainer.addChild(currBitmap);
         }
@@ -936,6 +996,10 @@ __webpack_require__.r(__webpack_exports__);
   src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_yellow.png */ "./src/assets/images/gamePlay/jump_yellow.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
+  id: 'jump_time',
+  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_time.png */ "./src/assets/images/gamePlay/jump_time.png")["default"]),
+  type: createjs.Types.IMAGE
+}, {
   id: 'overtime_bg',
   src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/overtime_bg.png */ "./src/assets/images/gamePlay/overtime_bg.png")["default"]),
   type: createjs.Types.IMAGE
@@ -958,6 +1022,10 @@ __webpack_require__.r(__webpack_exports__);
 }, {
   id: 'volume_open',
   src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/volume_open.png */ "./src/assets/images/gamePlay/volume_open.png")["default"]),
+  type: createjs.Types.IMAGE
+}, {
+  id: 'batterAddIcon',
+  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batterAddIcon.png */ "./src/assets/images/gamePlay/batterAddIcon.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_0',
@@ -1181,7 +1249,7 @@ class GameScore {
     const btnRestart = new createjs.Bitmap(loader.getResult('btnRestart'));
     btnRestart.x = (this.stage.canvas.width - btnRestart.image.width) / 2;
     btnRestart.y = this.stage.canvas.height - btnRestart.image.height - 69;
-    btnShare.x = (this.stage.canvas.width - btnShare.image.width) / 2 + 5;
+    btnShare.x = (this.stage.canvas.width - btnShare.image.width) / 2;
     btnShare.y = btnRestart.y - btnShare.image.height - 13;
     btnRestart.addEventListener('click', () => {
       _controls_gameState__WEBPACK_IMPORTED_MODULE_0__["default"].restart();
@@ -1201,7 +1269,7 @@ class GameScore {
     const scoreTitle1 = new createjs.Text('你的滑雪距离是', `bold 20px ${font}`, '#fff');
     scoreTitle1.x = scorePanel.x + 65;
     scoreTitle1.y = scorePanel.y + 77;
-    const scoreNum = new createjs.Text(`${this.score}米`, `bold 56px ${font}`, '#fff');
+    const scoreNum = new createjs.Text(`${this.score}`, `bold 56px ${font}`, '#fff');
     scoreNum.lineHeight = 81;
     const {
       width
@@ -1341,14 +1409,22 @@ class SelectRole extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   }
 
   getSprite(type) {
-    return new createjs.Sprite(this.spriteSheet, type);
+    const sprite = new createjs.Sprite(this.spriteSheet, type);
+    sprite.scale = 0.5;
+    return sprite;
   }
 
   initSpriteSheet() {
     const image = this.loader.getResult('selectRole');
     this.spriteSheet = new createjs.SpriteSheet({
       images: [image],
-      frames: [[0, 0, 120, 126], [120, 0, 120, 126], [242, 0, 119, 130], [361, 0, 122, 132], [0, 132, 168, 62], [168, 153, 209, 21]],
+      frames: [// [0, 0, 120, 126],
+      // [120, 0, 120, 126],
+      // [242, 0, 119, 130],
+      // [361, 0, 122, 132],
+      // [0, 132, 168, 62],
+      // [168, 153, 209, 21],
+      [0, 0, 240, 252], [240, 0, 244, 256], [484, 0, 238, 260], [722, 0, 244, 264], [0, 275, 335, 123], [335, 317, 418, 40]],
       animations: {
         iceRoleDefault: [0],
         iceRoleSelected: [1],
@@ -1526,6 +1602,8 @@ class WeightsAlgorithm {
   stepWeight = 5;
   maxWeight = 100;
   maxColNum = 2;
+  timeRowN = 30;
+  rowNum = 0;
 
   constructor(stage, {
     row,
@@ -1645,7 +1723,13 @@ class WeightsAlgorithm {
         });
       }
 
+      if (this.rowNum % this.timeRowN <= 0) {
+        const random = this.random(this.colors.length - 1);
+        row[random].bitmap = 'jump_time';
+      }
+
       prevRow = row;
+      this.rowNum++;
     });
     return JSON.parse(JSON.stringify(this.matrix));
   }
@@ -2275,7 +2359,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "af21df9096c37cfa089d5ad89e8aa27f.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "5dd2f24d50e1d01ffb8691bbdbbd50d0.png");
 
 /***/ }),
 
@@ -2336,6 +2420,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "9efcfd00462a1a1dd22d88575dff75eb.png");
+
+/***/ }),
+
+/***/ "./src/assets/images/gamePlay/batterAddIcon.png":
+/*!******************************************************!*\
+  !*** ./src/assets/images/gamePlay/batterAddIcon.png ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAPRJREFUKFNjZEAHbq06DIyMRWDhfwwLGXZXHURWwoihwaPVPcXdYIekEA9D89LD6Qy7amYR1FAVbr1DXoyPIX3iNmpocG4yZWBh9kdYy6hUFWEVCbFhxzYGxv/n4XL//+1jZHBrScsLMJvpaaoMF1eSFGDgZGNhuPrwDVzs5I2nDA2LjzaANZhpyMxUlRaES/pbqDII83ExzNt1ES729M1nhgMXHzcwMjjUCzCwsUvAZRgZbaoiLGeDnTRpRz3Df4ZVcLlfv95gDVYqhxJ6zHm0ultpyu7g52Zj2H7qDhHx4NwmzMD63wRsDiPLVYbt5U+QzQQA4hVehJ/1zp8AAAAASUVORK5CYII=");
 
 /***/ }),
 
@@ -2954,6 +3053,21 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./src/assets/images/gamePlay/jump_time.png":
+/*!**************************************************!*\
+  !*** ./src/assets/images/gamePlay/jump_time.png ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "f9f07ca7bea126d19982d4cb2c6f506b.png");
+
+/***/ }),
+
 /***/ "./src/assets/images/gamePlay/jump_yellow.png":
 /*!****************************************************!*\
   !*** ./src/assets/images/gamePlay/jump_yellow.png ***!
@@ -3160,7 +3274,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "9b13bfb3f55b027c1f36d833c5f11184.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "ee140b2493f423ecb7166fa790927892.png");
 
 /***/ }),
 
@@ -3527,10 +3641,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _model_gamePlay__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./model/gamePlay */ "./src/model/gamePlay.js");
 /* harmony import */ var _model_gameScore__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./model/gameScore */ "./src/model/gameScore.js");
 /* harmony import */ var _controls_gameState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./controls/gameState */ "./src/controls/gameState.js");
-/* harmony import */ var _model_weightsAlgorithm__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./model/weightsAlgorithm */ "./src/model/weightsAlgorithm.js");
-/* harmony import */ var _assets_css_ranking_list_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./assets/css/ranking-list.css */ "./src/assets/css/ranking-list.css");
-/* harmony import */ var _assets_css_ranking_list_css__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_assets_css_ranking_list_css__WEBPACK_IMPORTED_MODULE_6__);
-
+/* harmony import */ var _assets_css_ranking_list_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./assets/css/ranking-list.css */ "./src/assets/css/ranking-list.css");
+/* harmony import */ var _assets_css_ranking_list_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_assets_css_ranking_list_css__WEBPACK_IMPORTED_MODULE_5__);
 
 
 
