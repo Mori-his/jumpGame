@@ -104,7 +104,7 @@ export default class WeightsAlgorithm {
                     }
                 })
             }
-            if (this.rowNum % this.timeRowN <= 0) {
+            if (this.rowNum % this.timeRowN <= 0 && this.rowNum > 0) {
                 const random = this.random(this.colors.length - 1);
                 row[random].bitmap = 'jump_time';
             }

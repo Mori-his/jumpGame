@@ -476,7 +476,7 @@ export default class GamePlay extends EventEmitter {
     }
     fallingRole(
         y = 0,
-        time = 2000
+        time = 1500
     ) {
         this.jumpRoleY = y;
         this.role.image = this.roleFastRight;

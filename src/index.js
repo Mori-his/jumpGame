@@ -69,8 +69,14 @@ window.addEventListener('load', function() {
           loader: gamePlay.loader,
           score: gameState.score
       });
+      // 上传本次分数
+      save(gameState.score);
 
       gameScore.render();
+      // 查看排行榜
+      gameScore.once('viewRanking', () => {
+        renderRankingList(gameState.score, gamePlay.selectRoleType)
+      });
     });
     gameState.on('restart', () => {
       // gamePlay.run();

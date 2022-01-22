@@ -1,12 +1,13 @@
+import { EventEmitter } from 'events';
 import gameState from "../controls/gameState";
-import { loadFiles } from "../utils/loadQueue";
 
 
 const font = 'Microsoft YaHei'
 
-export class GameScore {
+export class GameScore extends EventEmitter {
 
     constructor(stage, options = {}) {
+        super();
         this.stage = stage;
         this.loader = options.loader
         this.score = options.score || 0;
@@ -49,6 +50,11 @@ export class GameScore {
         overQuotes2.x = (this.stage.canvas.width - overQuotes2.image.width) / 2;
         overQuotes1.y = btnShare.y - overQuotes1.image.height - 48;
         overQuotes2.y = btnShare.y - overQuotes2.image.height - 30;
+        const self = this;
+        btnShare.addEventListener('click', function btnClick() {
+            self.emit('viewRanking');
+            btnShare.removeAllEventListeners('click');
+        });
 
 
         const scorePanel = new createjs.Bitmap(loader.getResult('scorePanel'));
@@ -90,6 +96,7 @@ export class GameScore {
         )
 
     }
+
 
     render() {
         this.stage.addChild(this.container);
