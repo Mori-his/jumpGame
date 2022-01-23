@@ -2778,7 +2778,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       clearTimeout(this.batterEffectTimer);
       this.removeBatterContainer();
     });
-    this.moveBackground(this.rollContainer.y + this.renderHeight * 15, 2500);
+    this.moveBackground(this.rollContainer.y + this.renderHeight * 15, 2300);
   }
 
   jumpRole(y = this.jumpRoleY, x = this.role.x, time = 800, first = false) {

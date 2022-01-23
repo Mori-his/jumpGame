@@ -485,7 +485,7 @@ export default class GamePlay extends EventEmitter {
         
         this.moveBackground(
             this.rollContainer.y + this.renderHeight * 15,
-            2500
+            2300
         )
     }
 
