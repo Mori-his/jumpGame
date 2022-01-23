@@ -71,7 +71,7 @@ export default class GameStartPanel extends EventEmitter {
         this.startTips1 = new createjs.Bitmap(loader.getResult('startTips1'));
         this.startTips1.scale = 0.5;
         this.startTips1.x = (canvasRect.width - this.startTips1.image.width * 0.5) / 2;
-        this.startTips1.y = canvasRect.height - this.startTips1.image.height * 0.5 - 130;
+        this.startTips1.y = canvasRect.height - this.startTips1.image.height * 0.5 - 120;
 
         this.startBtn = new createjs.Bitmap(loader.getResult('startBtn'));
         this.startBtn.x = (canvasRect.width - this.startBtn.image.width) / 2;
@@ -131,7 +131,3 @@ export default class GameStartPanel extends EventEmitter {
     }
 
 }
-
-
-
-

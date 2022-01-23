@@ -2209,19 +2209,19 @@ __webpack_require__.r(__webpack_exports__);
 class GameLoading extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   source = [{
     id: 'loadingCableCar',
-    src: (__webpack_require__(/*! ../../src/assets/images/loading_cable_car.png */ "./src/assets/images/loading_cable_car.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/loading_cable_car.png */ "./src/assets/images/loading_cable_car.png")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'quotes1',
-    src: (__webpack_require__(/*! ../../src/assets/images/quotes1.png */ "./src/assets/images/quotes1.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/quotes1.png */ "./src/assets/images/quotes1.png")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'quotes2',
-    src: (__webpack_require__(/*! ../../src/assets/images/quotes2.png */ "./src/assets/images/quotes2.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/quotes2.png */ "./src/assets/images/quotes2.png")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'trumpet',
-    src: (__webpack_require__(/*! ../../src/assets/images/trumpet.png */ "./src/assets/images/trumpet.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/trumpet.png */ "./src/assets/images/trumpet.png")["default"]),
     type: createjs.Types.IMAGE
   }];
 
@@ -2254,16 +2254,18 @@ class GameLoading extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     this.progressCableCar = new createjs.Bitmap(loader.getResult('loadingCableCar'));
     this.progressCableCar.x = (this.stage.canvas.width - loadingBgWidth - this.progressCableCar.image.width) / 2;
     this.progressCableCar.y = 382;
-    this.quotes1 = new createjs.Bitmap(loader.getResult('quotes1'));
-    this.quotes2 = new createjs.Bitmap(loader.getResult('quotes2'));
-    this.trumpet = new createjs.Bitmap(loader.getResult('trumpet'));
-    this.quotes1.x = (this.stage.canvas.width - this.quotes1.image.width) / 2;
-    this.quotes2.x = (this.stage.canvas.width - this.quotes2.image.width) / 2;
-    this.trumpet.x = 20;
-    this.quotes1.y = 183;
-    this.quotes2.y = 287;
-    this.trumpet.y = 211;
-    this.container.addChild(this.backgroundAlpha, this.quotes1, this.quotes2, this.trumpet, this.loadingBg, this.progressBox, this.progressCableCar);
+
+    if (parseInt(Math.random() * 10) % 2) {
+      this.quotes1 = new createjs.Bitmap(loader.getResult('quotes1'));
+      this.quotes1.x = (this.stage.canvas.width - this.quotes1.image.width) / 2;
+      this.quotes1.y = 250;
+    } else {
+      this.quotes2 = new createjs.Bitmap(loader.getResult('quotes2'));
+      this.quotes2.x = (this.stage.canvas.width - this.quotes2.image.width) / 2;
+      this.quotes2.y = 250;
+    }
+
+    this.container.addChild(this.backgroundAlpha, this.quotes1, this.quotes2, this.loadingBg, this.progressBox, this.progressCableCar);
     this.stage.addChild(this.container);
     this.stage.update();
     this.emit('loaded', this);
@@ -3089,283 +3091,283 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([{
   id: 'selectRole',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/selectRole/role_group.png */ "./src/assets/images/gamePlay/selectRole/role_group.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/selectRole/role_group.png */ "./src/assets/images/gamePlay/selectRole/role_group.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'fixedTopBg',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/fixed_top_bg.png */ "./src/assets/images/gamePlay/fixed_top_bg.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/fixed_top_bg.png */ "./src/assets/images/gamePlay/fixed_top_bg.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'rollBg',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/roll_bg.png */ "./src/assets/images/gamePlay/roll_bg.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/roll_bg.png */ "./src/assets/images/gamePlay/roll_bg.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'snow',
-  src: (__webpack_require__(/*! ../../src/assets/images/snow.png */ "./src/assets/images/snow.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/snow.png */ "./src/assets/images/snow.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'guideLogo',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/guide_logo.png */ "./src/assets/images/gamePlay/guide_logo.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/guide_logo.png */ "./src/assets/images/gamePlay/guide_logo.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'guideText',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/guide_text.png */ "./src/assets/images/gamePlay/guide_text.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/guide_text.png */ "./src/assets/images/gamePlay/guide_text.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'hand',
-  src: (__webpack_require__(/*! ../../src/assets/images/hand.png */ "./src/assets/images/hand.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/hand.png */ "./src/assets/images/hand.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'leftArrow',
-  src: (__webpack_require__(/*! ../../src/assets/images/left_arrow.png */ "./src/assets/images/left_arrow.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/left_arrow.png */ "./src/assets/images/left_arrow.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_2',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter_2.png */ "./src/assets/images/gamePlay/batter_2.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter_2.png */ "./src/assets/images/gamePlay/batter_2.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_3',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter_3.png */ "./src/assets/images/gamePlay/batter_3.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter_3.png */ "./src/assets/images/gamePlay/batter_3.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_4',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter_4.png */ "./src/assets/images/gamePlay/batter_4.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter_4.png */ "./src/assets/images/gamePlay/batter_4.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_bg',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown_bg.png */ "./src/assets/images/gamePlay/countdown_bg.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown_bg.png */ "./src/assets/images/gamePlay/countdown_bg.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'gameover_text',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/gameover_text.png */ "./src/assets/images/gamePlay/gameover_text.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/gameover_text.png */ "./src/assets/images/gamePlay/gameover_text.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'jump_blue',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_blue.png */ "./src/assets/images/gamePlay/jump_blue.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/jump_blue.png */ "./src/assets/images/gamePlay/jump_blue.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'jump_green',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_green.png */ "./src/assets/images/gamePlay/jump_green.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/jump_green.png */ "./src/assets/images/gamePlay/jump_green.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'jump_red',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_red.png */ "./src/assets/images/gamePlay/jump_red.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/jump_red.png */ "./src/assets/images/gamePlay/jump_red.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'jump_yellow',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_yellow.png */ "./src/assets/images/gamePlay/jump_yellow.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/jump_yellow.png */ "./src/assets/images/gamePlay/jump_yellow.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'jump_time',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/jump_time.png */ "./src/assets/images/gamePlay/jump_time.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/jump_time.png */ "./src/assets/images/gamePlay/jump_time.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'overtime_bg',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/overtime_bg.png */ "./src/assets/images/gamePlay/overtime_bg.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/overtime_bg.png */ "./src/assets/images/gamePlay/overtime_bg.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'progress_bg',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/progress_bg.png */ "./src/assets/images/gamePlay/progress_bg.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/progress_bg.png */ "./src/assets/images/gamePlay/progress_bg.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'progress',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/progress.png */ "./src/assets/images/gamePlay/progress.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/progress.png */ "./src/assets/images/gamePlay/progress.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'speed_quotes',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/speed_quotes.png */ "./src/assets/images/gamePlay/speed_quotes.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/speed_quotes.png */ "./src/assets/images/gamePlay/speed_quotes.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'volume_close',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/volume_close.png */ "./src/assets/images/gamePlay/volume_close.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/volume_close.png */ "./src/assets/images/gamePlay/volume_close.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'volume_open',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/volume_open.png */ "./src/assets/images/gamePlay/volume_open.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/volume_open.png */ "./src/assets/images/gamePlay/volume_open.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batterAddIcon',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batterAddIcon.png */ "./src/assets/images/gamePlay/batterAddIcon.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batterAddIcon.png */ "./src/assets/images/gamePlay/batterAddIcon.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_0',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/0.png */ "./src/assets/images/gamePlay/distance/0.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/0.png */ "./src/assets/images/gamePlay/distance/0.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_1',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/1.png */ "./src/assets/images/gamePlay/distance/1.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/1.png */ "./src/assets/images/gamePlay/distance/1.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_2',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/2.png */ "./src/assets/images/gamePlay/distance/2.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/2.png */ "./src/assets/images/gamePlay/distance/2.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_3',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/3.png */ "./src/assets/images/gamePlay/distance/3.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/3.png */ "./src/assets/images/gamePlay/distance/3.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_4',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/4.png */ "./src/assets/images/gamePlay/distance/4.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/4.png */ "./src/assets/images/gamePlay/distance/4.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_5',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/5.png */ "./src/assets/images/gamePlay/distance/5.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/5.png */ "./src/assets/images/gamePlay/distance/5.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_6',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/6.png */ "./src/assets/images/gamePlay/distance/6.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/6.png */ "./src/assets/images/gamePlay/distance/6.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_7',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/7.png */ "./src/assets/images/gamePlay/distance/7.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/7.png */ "./src/assets/images/gamePlay/distance/7.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_8',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/8.png */ "./src/assets/images/gamePlay/distance/8.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/8.png */ "./src/assets/images/gamePlay/distance/8.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'distance_9',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/distance/9.png */ "./src/assets/images/gamePlay/distance/9.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/distance/9.png */ "./src/assets/images/gamePlay/distance/9.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_0',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/0.png */ "./src/assets/images/gamePlay/batter/0.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/0.png */ "./src/assets/images/gamePlay/batter/0.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_1',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/1.png */ "./src/assets/images/gamePlay/batter/1.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/1.png */ "./src/assets/images/gamePlay/batter/1.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_2',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/2.png */ "./src/assets/images/gamePlay/batter/2.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/2.png */ "./src/assets/images/gamePlay/batter/2.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_3',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/3.png */ "./src/assets/images/gamePlay/batter/3.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/3.png */ "./src/assets/images/gamePlay/batter/3.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_4',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/4.png */ "./src/assets/images/gamePlay/batter/4.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/4.png */ "./src/assets/images/gamePlay/batter/4.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_5',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/5.png */ "./src/assets/images/gamePlay/batter/5.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/5.png */ "./src/assets/images/gamePlay/batter/5.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_6',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/6.png */ "./src/assets/images/gamePlay/batter/6.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/6.png */ "./src/assets/images/gamePlay/batter/6.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_7',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/7.png */ "./src/assets/images/gamePlay/batter/7.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/7.png */ "./src/assets/images/gamePlay/batter/7.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_8',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/8.png */ "./src/assets/images/gamePlay/batter/8.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/8.png */ "./src/assets/images/gamePlay/batter/8.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'batter_num_9',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/batter/9.png */ "./src/assets/images/gamePlay/batter/9.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/batter/9.png */ "./src/assets/images/gamePlay/batter/9.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_0',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/0.png */ "./src/assets/images/gamePlay/countdown/0.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/0.png */ "./src/assets/images/gamePlay/countdown/0.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_1',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/1.png */ "./src/assets/images/gamePlay/countdown/1.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/1.png */ "./src/assets/images/gamePlay/countdown/1.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_2',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/2.png */ "./src/assets/images/gamePlay/countdown/2.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/2.png */ "./src/assets/images/gamePlay/countdown/2.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_3',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/3.png */ "./src/assets/images/gamePlay/countdown/3.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/3.png */ "./src/assets/images/gamePlay/countdown/3.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_4',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/4.png */ "./src/assets/images/gamePlay/countdown/4.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/4.png */ "./src/assets/images/gamePlay/countdown/4.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_5',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/5.png */ "./src/assets/images/gamePlay/countdown/5.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/5.png */ "./src/assets/images/gamePlay/countdown/5.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_6',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/6.png */ "./src/assets/images/gamePlay/countdown/6.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/6.png */ "./src/assets/images/gamePlay/countdown/6.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_7',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/7.png */ "./src/assets/images/gamePlay/countdown/7.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/7.png */ "./src/assets/images/gamePlay/countdown/7.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_8',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/8.png */ "./src/assets/images/gamePlay/countdown/8.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/8.png */ "./src/assets/images/gamePlay/countdown/8.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'countdown_9',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/countdown/9.png */ "./src/assets/images/gamePlay/countdown/9.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/countdown/9.png */ "./src/assets/images/gamePlay/countdown/9.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'scorePanel',
-  src: (__webpack_require__(/*! ../../src/assets/images/gameOverScore/score_panel.png */ "./src/assets/images/gameOverScore/score_panel.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gameOverScore/score_panel.png */ "./src/assets/images/gameOverScore/score_panel.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'btnRestart',
-  src: (__webpack_require__(/*! ../../src/assets/images/gameOverScore/btn_restart.png */ "./src/assets/images/gameOverScore/btn_restart.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gameOverScore/btn_restart.png */ "./src/assets/images/gameOverScore/btn_restart.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'btnShare',
-  src: (__webpack_require__(/*! ../../src/assets/images/gameOverScore/btn_share.png */ "./src/assets/images/gameOverScore/btn_share.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gameOverScore/btn_share.png */ "./src/assets/images/gameOverScore/btn_share.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'light',
-  src: (__webpack_require__(/*! ../../src/assets/images/gameOverScore/light.png */ "./src/assets/images/gameOverScore/light.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gameOverScore/light.png */ "./src/assets/images/gameOverScore/light.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'overQuotes1',
-  src: (__webpack_require__(/*! ../../src/assets/images/gameOverScore/over_quotes_1.png */ "./src/assets/images/gameOverScore/over_quotes_1.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gameOverScore/over_quotes_1.png */ "./src/assets/images/gameOverScore/over_quotes_1.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'overQuotes2',
-  src: (__webpack_require__(/*! ../../src/assets/images/gameOverScore/over_quotes_2.png */ "./src/assets/images/gameOverScore/over_quotes_2.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gameOverScore/over_quotes_2.png */ "./src/assets/images/gameOverScore/over_quotes_2.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleMaleFastLeft',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_male_fast_left.png */ "./src/assets/images/gamePlay/role/role_male_fast_left.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_male_fast_left.png */ "./src/assets/images/gamePlay/role/role_male_fast_left.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleMaleFastRight',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_male_fast_right.png */ "./src/assets/images/gamePlay/role/role_male_fast_right.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_male_fast_right.png */ "./src/assets/images/gamePlay/role/role_male_fast_right.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleMaleLeft',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_male_left.png */ "./src/assets/images/gamePlay/role/role_male_left.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_male_left.png */ "./src/assets/images/gamePlay/role/role_male_left.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleMaleRight',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_male_right.png */ "./src/assets/images/gamePlay/role/role_male_right.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_male_right.png */ "./src/assets/images/gamePlay/role/role_male_right.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleFemaleFastLeft',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_female_fast_left.png */ "./src/assets/images/gamePlay/role/role_female_fast_left.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_female_fast_left.png */ "./src/assets/images/gamePlay/role/role_female_fast_left.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleFemaleFastRight',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_female_fast_right.png */ "./src/assets/images/gamePlay/role/role_female_fast_right.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_female_fast_right.png */ "./src/assets/images/gamePlay/role/role_female_fast_right.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleFemaleLeft',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_female_left.png */ "./src/assets/images/gamePlay/role/role_female_left.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_female_left.png */ "./src/assets/images/gamePlay/role/role_female_left.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'roleFemaleRight',
-  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_female_right.png */ "./src/assets/images/gamePlay/role/role_female_right.png")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/images/gamePlay/role/role_female_right.png */ "./src/assets/images/gamePlay/role/role_female_right.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'BGMMP3',
-  src: (__webpack_require__(/*! ../../src/assets/sound/BGM.mp3 */ "./src/assets/sound/BGM.mp3")["default"]),
+  src: (__webpack_require__(/*! ../../../../../src/assets/sound/BGM.mp3 */ "./src/assets/sound/BGM.mp3")["default"]),
   type: createjs.Types.SOUND
 }]);
 
@@ -3416,12 +3418,18 @@ class GameScore extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     btnRestart.addEventListener('click', () => {
       _controls_gameState__WEBPACK_IMPORTED_MODULE_1__["default"].restart();
     });
-    const overQuotes1 = new createjs.Bitmap(loader.getResult('overQuotes1'));
-    const overQuotes2 = new createjs.Bitmap(loader.getResult('overQuotes2'));
-    overQuotes1.x = (this.stage.canvas.width - overQuotes1.image.width) / 2;
-    overQuotes2.x = (this.stage.canvas.width - overQuotes2.image.width) / 2;
-    overQuotes1.y = btnShare.y - overQuotes1.image.height - 48;
-    overQuotes2.y = btnShare.y - overQuotes2.image.height - 30;
+    let overQuotes = '';
+
+    if (parseInt(Math.random() * 10) % 2) {
+      overQuotes = new createjs.Bitmap(loader.getResult('overQuotes1'));
+      overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
+      overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+    } else {
+      overQuotes = new createjs.Bitmap(loader.getResult('overQuotes2'));
+      overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
+      overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+    }
+
     const self = this;
     btnShare.addEventListener('click', function btnClick() {
       self.emit('viewRanking');
@@ -3431,20 +3439,20 @@ class GameScore extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     scorePanel.x = (this.stage.canvas.width - scorePanel.image.width) / 2;
     scorePanel.y = btnShare.y - scorePanel.image.height - 136;
     const scoreTitle = new createjs.Text('恭喜!', `bold 32px ${font}`, '#fff');
-    scoreTitle.x = scorePanel.x + 101;
-    scoreTitle.y = scorePanel.y + 35;
+    scoreTitle.x = scorePanel.x + 125;
+    scoreTitle.y = scorePanel.y + 125;
     const scoreTitle1 = new createjs.Text('你的滑雪距离是', `bold 20px ${font}`, '#fff');
-    scoreTitle1.x = scorePanel.x + 65;
-    scoreTitle1.y = scorePanel.y + 77;
+    scoreTitle1.x = scorePanel.x + 85;
+    scoreTitle1.y = scorePanel.y + 167;
     const scoreNum = new createjs.Text(`${this.score}`, `bold 56px ${font}`, '#fff');
     scoreNum.lineHeight = 81;
     const {
       width
     } = scoreNum.getBounds();
     scoreNum.x = (this.stage.canvas.width - width) / 2;
-    scoreNum.y = scorePanel.y + 108;
+    scoreNum.y = scorePanel.y + 198;
     this.scorePanelContainer.addChild(light, scorePanel, scoreTitle, scoreTitle1, scoreNum);
-    this.container.addChild(this.backgroundAlpha, this.scorePanelContainer, overQuotes2, overQuotes1, btnRestart, btnShare);
+    this.container.addChild(this.backgroundAlpha, this.scorePanelContainer, overQuotes, btnRestart, btnShare);
   }
 
   render() {
@@ -3653,23 +3661,23 @@ class HomeBackground extends createjs.Bitmap {
 class GameStartPanel extends events__WEBPACK_IMPORTED_MODULE_2__.EventEmitter {
   source = [{
     id: 'mainPng',
-    src: (__webpack_require__(/*! ../../src/assets/images/start_background.jpg */ "./src/assets/images/start_background.jpg")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/start_background.jpg */ "./src/assets/images/start_background.jpg")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'startBtn',
-    src: (__webpack_require__(/*! ../../src/assets/images/start_btn.png */ "./src/assets/images/start_btn.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/start_btn.png */ "./src/assets/images/start_btn.png")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'iceRole',
-    src: (__webpack_require__(/*! ../../src/assets/images/ice_role.png */ "./src/assets/images/ice_role.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/ice_role.png */ "./src/assets/images/ice_role.png")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'snowRole',
-    src: (__webpack_require__(/*! ../../src/assets/images/snow_role.png */ "./src/assets/images/snow_role.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/snow_role.png */ "./src/assets/images/snow_role.png")["default"]),
     type: createjs.Types.IMAGE
   }, {
     id: 'startTips1',
-    src: (__webpack_require__(/*! ../../src/assets/images/start_tips_1.png */ "./src/assets/images/start_tips_1.png")["default"]),
+    src: (__webpack_require__(/*! ../../../../../src/assets/images/start_tips_1.png */ "./src/assets/images/start_tips_1.png")["default"]),
     type: createjs.Types.IMAGE
   }];
 
@@ -3697,7 +3705,7 @@ class GameStartPanel extends events__WEBPACK_IMPORTED_MODULE_2__.EventEmitter {
     this.startTips1 = new createjs.Bitmap(loader.getResult('startTips1'));
     this.startTips1.scale = 0.5;
     this.startTips1.x = (canvasRect.width - this.startTips1.image.width * 0.5) / 2;
-    this.startTips1.y = canvasRect.height - this.startTips1.image.height * 0.5 - 130;
+    this.startTips1.y = canvasRect.height - this.startTips1.image.height * 0.5 - 120;
     this.startBtn = new createjs.Bitmap(loader.getResult('startBtn'));
     this.startBtn.x = (canvasRect.width - this.startBtn.image.width) / 2;
     this.startBtn.y = canvasRect.height - this.startBtn.image.height - 49;
@@ -4665,22 +4673,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "9efcfd00462a1a1dd22d88575dff75eb.png");
-
-/***/ }),
-
-/***/ "./src/assets/images/gamePlay/batterAddIcon.png":
-/*!******************************************************!*\
-  !*** ./src/assets/images/gamePlay/batterAddIcon.png ***!
-  \******************************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAPRJREFUKFNjZEAHbq06DIyMRWDhfwwLGXZXHURWwoihwaPVPcXdYIekEA9D89LD6Qy7amYR1FAVbr1DXoyPIX3iNmpocG4yZWBh9kdYy6hUFWEVCbFhxzYGxv/n4XL//+1jZHBrScsLMJvpaaoMF1eSFGDgZGNhuPrwDVzs5I2nDA2LjzaANZhpyMxUlRaES/pbqDII83ExzNt1ES729M1nhgMXHzcwMjjUCzCwsUvAZRgZbaoiLGeDnTRpRz3Df4ZVcLlfv95gDVYqhxJ6zHm0ultpyu7g52Zj2H7qDhHx4NwmzMD63wRsDiPLVYbt5U+QzQQA4hVehJ/1zp8AAAAASUVORK5CYII=");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "8a9686e4dc8e79abcff8ffcaa93bf5f0.png");
 
 /***/ }),
 
@@ -4831,6 +4824,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAQCAMAAAAVv241AAAAz1BMVEUAAACWtM4hYJcfXpUXWJIOUo8HTYsASYeeutIHTIouaZ0kYpgBSIkATYsATYwAVZ4GTIlfjLSJqshlkrdWhrBymr1Lfapmkbdslrpdi7NBdqYfXpUZWZMWWJIFTIoASIcASIgASIYAS4kAUY0AVZKlvtV+o8I6caINUY0GTIl0m74vap0fXpYOUo5Vha86caIKT4suaJweXZUITYscW5QbXJQiYJjB0+PO3Omuxdr////8/f7x9vnG1+UAR4bt8/fs8vbZ5O3f6PC5zd6zydvXWFI/AAAAN3RSTlMA/N2siHxxTv7k48RkHhcH/fr5+fLt7evp5+fOpplfVUQ5LxMK/fz8+fnz7+vq6N3Tyb65uJ6U/JWIgAAAAKpJREFUCNcVy9USgmAYhOGlBRTsprE7fzrU+78mP56jd2ZnAZiSzvOCjUZQ7OuszM8iyHNVjfnjJhtKgDNNuzIgDT4nE3Irv4No5VTBi/3eILeaa9MS6dThNotFuPNkqHquuk5yAbj2E242aXUZLTCXM471L8KXPjAMR7ZsT49GCvydtgDgzys+hKGlvUdHKRgnAVgO0t5hEsWLDog6jiM2KqgbiihY7YDiD1hFEaFM9n9qAAAAAElFTkSuQmCC");
+
+/***/ }),
+
+/***/ "./src/assets/images/gamePlay/batterAddIcon.png":
+/*!******************************************************!*\
+  !*** ./src/assets/images/gamePlay/batterAddIcon.png ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAPRJREFUKFNjZEAHbq06DIyMRWDhfwwLGXZXHURWwoihwaPVPcXdYIekEA9D89LD6Qy7amYR1FAVbr1DXoyPIX3iNmpocG4yZWBh9kdYy6hUFWEVCbFhxzYGxv/n4XL//+1jZHBrScsLMJvpaaoMF1eSFGDgZGNhuPrwDVzs5I2nDA2LjzaANZhpyMxUlRaES/pbqDII83ExzNt1ES729M1nhgMXHzcwMjjUCzCwsUvAZRgZbaoiLGeDnTRpRz3Df4ZVcLlfv95gDVYqhxJ6zHm0ultpyu7g52Zj2H7qDhHx4NwmzMD63wRsDiPLVYbt5U+QzQQA4hVehJ/1zp8AAAAASUVORK5CYII=");
 
 /***/ }),
 
@@ -5730,7 +5738,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "caa5958a484b3701737d0bff00d5695a.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "9996b2333ffbfb30add3518e193c2a61.png");
 
 /***/ }),
 

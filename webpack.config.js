@@ -2,7 +2,6 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 
-
 const env = process.env.NODE_ENV || 'development';
 
 const outputPath = path.resolve('./build');

@@ -44,34 +44,39 @@ export class GameScore extends EventEmitter {
           gameState.restart();
         })
 
-        const overQuotes1 = new createjs.Bitmap(loader.getResult('overQuotes1'))
-        const overQuotes2 = new createjs.Bitmap(loader.getResult('overQuotes2'))
-        overQuotes1.x = (this.stage.canvas.width - overQuotes1.image.width) / 2;
-        overQuotes2.x = (this.stage.canvas.width - overQuotes2.image.width) / 2;
-        overQuotes1.y = btnShare.y - overQuotes1.image.height - 48;
-        overQuotes2.y = btnShare.y - overQuotes2.image.height - 30;
+        let overQuotes = ''
+
+        if (parseInt(Math.random() * 10) % 2) {
+          overQuotes = new createjs.Bitmap(loader.getResult('overQuotes1'))
+          overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
+          overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+        } else {
+          overQuotes = new createjs.Bitmap(loader.getResult('overQuotes2'))
+          overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
+          overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+        }
+
         const self = this;
         btnShare.addEventListener('click', function btnClick() {
             self.emit('viewRanking');
             btnShare.removeAllEventListeners('click');
         });
 
-
         const scorePanel = new createjs.Bitmap(loader.getResult('scorePanel'));
         scorePanel.x = (this.stage.canvas.width - scorePanel.image.width) / 2;
         scorePanel.y = btnShare.y - scorePanel.image.height - 136;
 
         const scoreTitle = new createjs.Text('恭喜!', `bold 32px ${font}`, '#fff');
-        scoreTitle.x = scorePanel.x + 101;
-        scoreTitle.y = scorePanel.y + 35;
+        scoreTitle.x = scorePanel.x + 125;
+        scoreTitle.y = scorePanel.y + 125;
         const scoreTitle1 = new createjs.Text('你的滑雪距离是', `bold 20px ${font}`, '#fff');
-        scoreTitle1.x = scorePanel.x + 65;
-        scoreTitle1.y = scorePanel.y + 77;
+        scoreTitle1.x = scorePanel.x + 85;
+        scoreTitle1.y = scorePanel.y + 167;
         const scoreNum = new createjs.Text(`${this.score}`, `bold 56px ${font}`, '#fff');
         scoreNum.lineHeight = 81;
         const { width } = scoreNum.getBounds();
         scoreNum.x = (this.stage.canvas.width - width) / 2;
-        scoreNum.y = scorePanel.y + 108;
+        scoreNum.y = scorePanel.y + 198;
 
 
 
@@ -89,8 +94,7 @@ export class GameScore extends EventEmitter {
         this.container.addChild(
             this.backgroundAlpha,
             this.scorePanelContainer,
-            overQuotes2,
-            overQuotes1,
+            overQuotes,
             btnRestart,
             btnShare
         )

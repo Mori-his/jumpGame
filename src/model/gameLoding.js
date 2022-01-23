@@ -74,28 +74,27 @@ export default class GameLoading extends EventEmitter {
         this.progressCableCar.x = (this.stage.canvas.width - loadingBgWidth - this.progressCableCar.image.width) / 2
         this.progressCableCar.y = 382
 
-        this.quotes1 = new createjs.Bitmap(loader.getResult('quotes1'));
-        this.quotes2 = new createjs.Bitmap(loader.getResult('quotes2'));
-        this.trumpet = new createjs.Bitmap(loader.getResult('trumpet'));
-
-        this.quotes1.x = (this.stage.canvas.width - this.quotes1.image.width) / 2;
-        this.quotes2.x = (this.stage.canvas.width - this.quotes2.image.width) / 2;
-        this.trumpet.x = 20;
-        this.quotes1.y = 183;
-        this.quotes2.y = 287;
-        this.trumpet.y = 211;
+        if (parseInt(Math.random() * 10) % 2) {
+          this.quotes1 = new createjs.Bitmap(loader.getResult('quotes1'));
+          this.quotes1.x = (this.stage.canvas.width - this.quotes1.image.width) / 2;
+          this.quotes1.y = 250;
+        } else {
+          this.quotes2 = new createjs.Bitmap(loader.getResult('quotes2'));
+          this.quotes2.x = (this.stage.canvas.width - this.quotes2.image.width) / 2;
+          this.quotes2.y = 250;
+        }
 
         this.container.addChild(
             this.backgroundAlpha,
             this.quotes1,
             this.quotes2,
-            this.trumpet,
             this.loadingBg,
             this.progressBox,
             this.progressCableCar
         )
         this.stage.addChild(this.container);
         this.stage.update();
+
         this.emit('loaded', this);
     }
 
