@@ -3498,7 +3498,8 @@ class SelectRole extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
 
   initRole() {
     const maskBg = new createjs.Shape();
-    maskBg.graphics.beginFill('rgba(0, 0, 0, 0.7)').drawRect(0, 0, this.stage.canvas.width, this.stage.canvas.height);
+    maskBg.graphics.beginFill('rgba(0, 0, 0, 0.9)').drawRect(0, 0, this.stage.canvas.width, this.stage.canvas.height);
+    maskBg.addEventListener('click', () => {});
     this.iceRoleDefault = this.getSprite('iceRoleDefault');
     this.iceRoleSelected = this.getSprite('iceRoleSelected');
     this.iceRoleDefault.x = (this.stage.canvas.width - 120 * 2) / 2 - 20;
@@ -5648,7 +5649,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "95d58baba95037d990684b5ca16ffa2b.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "bef3981b4593ea12da4a20784186f7ad.png");
 
 /***/ }),
 
@@ -5663,7 +5664,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "08138f1b1b6c1e81fd39bd6e103a1d17.png");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "f77a07b46c5ddfb147b56f07e419e7a3.png");
 
 /***/ }),
 

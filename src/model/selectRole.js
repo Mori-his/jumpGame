@@ -13,12 +13,15 @@ export default class SelectRole extends EventEmitter {
 
     initRole() {
         const maskBg = new createjs.Shape();
-        maskBg.graphics.beginFill('rgba(0, 0, 0, 0.7)').drawRect(
+        maskBg.graphics.beginFill('rgba(0, 0, 0, 0.9)').drawRect(
             0,
             0,
             this.stage.canvas.width,
             this.stage.canvas.height,
         );
+
+        maskBg.addEventListener('click', () => {})
+
         this.iceRoleDefault = this.getSprite('iceRoleDefault');
         this.iceRoleSelected = this.getSprite('iceRoleSelected');
         this.iceRoleDefault.x = (this.stage.canvas.width - 120 * 2) / 2 - 20;
@@ -51,8 +54,8 @@ export default class SelectRole extends EventEmitter {
             this.iceRoleDefault,
             this.snowRoleDefault,
         );
-        
-        
+
+
         this.handleSelectIce = this.handleSelectIce.bind(this);
         this.iceRoleDefault.addEventListener('click', this.handleSelectIce);
         this.iceRoleSelected.addEventListener('click', this.handleSelectIce)
@@ -167,7 +170,3 @@ export default class SelectRole extends EventEmitter {
         this.removeAllListeners('selectedRole');
     }
 }
-
-
-
-
