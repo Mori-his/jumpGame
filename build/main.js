@@ -2782,12 +2782,12 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
     this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
     this.speedQuotes.alpha = 1;
-    this.stage.addChild(this.speedQuotes);
+    this.container.addChild(this.speedQuotes);
     createjs.Tween.get(this.speedQuotes).to({
       y: -this.speedQuotes.image.height,
       alpha: 0
     }, 2000, createjs.Ease.quadIn).call(() => {
-      this.stage.removeChild(this.speedQuotes);
+      this.container.removeChild(this.speedQuotes);
     });
     this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000, first).call(() => {
       clearTimeout(this.batterEffectTimer);
