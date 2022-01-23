@@ -3401,6 +3401,8 @@ class GameScore extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   }
 
   sourceComplete() {
+    // 基础位置距离
+    const base = 50;
     const loader = this.loader;
     this.backgroundAlpha = new createjs.Shape();
     this.backgroundAlpha.graphics.beginFill('rgba(0, 0, 0, 0.7)').drawRect(0, 0, this.stage.canvas.width, this.stage.canvas.height);
@@ -3423,11 +3425,11 @@ class GameScore extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     if (parseInt(Math.random() * 10) % 2) {
       overQuotes = new createjs.Bitmap(loader.getResult('overQuotes1'));
       overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
-      overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+      overQuotes.y = btnShare.y - overQuotes.image.height - (40 - base);
     } else {
       overQuotes = new createjs.Bitmap(loader.getResult('overQuotes2'));
       overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
-      overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+      overQuotes.y = btnShare.y - overQuotes.image.height - (40 - base);
     }
 
     const self = this;
@@ -3437,7 +3439,7 @@ class GameScore extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     });
     const scorePanel = new createjs.Bitmap(loader.getResult('scorePanel'));
     scorePanel.x = (this.stage.canvas.width - scorePanel.image.width) / 2;
-    scorePanel.y = btnShare.y - scorePanel.image.height - 136;
+    scorePanel.y = btnShare.y - scorePanel.image.height - (136 - base);
     const scoreTitle = new createjs.Text('恭喜!', `bold 32px ${font}`, '#fff');
     scoreTitle.x = scorePanel.x + 125;
     scoreTitle.y = scorePanel.y + 125;
@@ -3994,7 +3996,6 @@ const vm = new Vue({
       const rankingList = list.map(item => {
         return item.result;
       });
-      console.log('ranking:', rankingList.indexOf(myResult));
       return rankingList.indexOf(myResult);
     }
 

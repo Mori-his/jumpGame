@@ -17,6 +17,8 @@ export class GameScore extends EventEmitter {
 
 
     sourceComplete() {
+        // 基础位置距离
+        const base = 50
         const loader = this.loader;
         this.backgroundAlpha = new createjs.Shape();
         this.backgroundAlpha.graphics.beginFill('rgba(0, 0, 0, 0.7)').drawRect(
@@ -49,11 +51,11 @@ export class GameScore extends EventEmitter {
         if (parseInt(Math.random() * 10) % 2) {
           overQuotes = new createjs.Bitmap(loader.getResult('overQuotes1'))
           overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
-          overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+          overQuotes.y = btnShare.y - overQuotes.image.height - (40 - base);
         } else {
           overQuotes = new createjs.Bitmap(loader.getResult('overQuotes2'))
           overQuotes.x = (this.stage.canvas.width - overQuotes.image.width) / 2;
-          overQuotes.y = btnShare.y - overQuotes.image.height - 20;
+          overQuotes.y = btnShare.y - overQuotes.image.height - (40 - base);
         }
 
         const self = this;
@@ -64,7 +66,7 @@ export class GameScore extends EventEmitter {
 
         const scorePanel = new createjs.Bitmap(loader.getResult('scorePanel'));
         scorePanel.x = (this.stage.canvas.width - scorePanel.image.width) / 2;
-        scorePanel.y = btnShare.y - scorePanel.image.height - 136;
+        scorePanel.y = btnShare.y - scorePanel.image.height - (136 - base);
 
         const scoreTitle = new createjs.Text('恭喜!', `bold 32px ${font}`, '#fff');
         scoreTitle.x = scorePanel.x + 125;

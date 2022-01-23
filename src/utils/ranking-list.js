@@ -17,8 +17,6 @@ const vm = new Vue({
         return item.result
       })
 
-      console.log('ranking:', rankingList.indexOf(myResult))
-
       return rankingList.indexOf(myResult)
     }
   },
