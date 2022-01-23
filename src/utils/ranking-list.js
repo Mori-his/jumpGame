@@ -5,6 +5,7 @@ const vm = new Vue({
   data: {
     list: [],
     myResult: 0,
+    finished: false,
     resultType: 1
   },
 
@@ -35,6 +36,8 @@ const vm = new Vue({
       this.myResult = result
       this.resultType = type
 
+      document.querySelector('#mainCanvas').style = "display: none;"
+
       axios.request({
         url: 'http://13.232.169.180/api/search/ranking',
         method: 'GET'
@@ -42,6 +45,10 @@ const vm = new Vue({
         .then((res) => {
           const list = res.data.data.rankingList
           this.list = list
+          this.finished = true
+        })
+        .catch(() => {
+          this.finished = true
         })
     }
   }

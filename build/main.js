@@ -3982,6 +3982,7 @@ const vm = new Vue({
   data: {
     list: [],
     myResult: 0,
+    finished: false,
     resultType: 1
   },
   computed: {
@@ -4010,12 +4011,16 @@ const vm = new Vue({
     renderRankingList(result, type) {
       this.myResult = result;
       this.resultType = type;
+      document.querySelector('#mainCanvas').style = "display: none;";
       axios__WEBPACK_IMPORTED_MODULE_0___default().request({
         url: 'http://13.232.169.180/api/search/ranking',
         method: 'GET'
       }).then(res => {
         const list = res.data.data.rankingList;
         this.list = list;
+        this.finished = true;
+      }).catch(() => {
+        this.finished = true;
       });
     }
 
@@ -5892,11 +5897,11 @@ __webpack_require__.r(__webpack_exports__);
  // ranking-list
 
  // 调用示例
-// setTimeout(() => {
-//   console.log('查询成绩，执行了')
-//   renderRankingList(500, 0)
-// }, 3000)
-// 调用示例
+
+setTimeout(() => {
+  console.log('查询成绩，执行了');
+  (0,_utils_ranking_list__WEBPACK_IMPORTED_MODULE_6__.renderRankingList)(500, 0);
+}, 20); // 调用示例
 // setTimeout(() => {
 //   console.log('保存成绩，执行了')
 //   save(parseInt(475 * (Math.random() + 0)))

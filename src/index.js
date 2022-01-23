@@ -10,10 +10,10 @@ import './assets/css/ranking-list.css';
 import { renderRankingList, save } from './utils/ranking-list'
 
 // 调用示例
-// setTimeout(() => {
-//   console.log('查询成绩，执行了')
-//   renderRankingList(500, 0)
-// }, 3000)
+setTimeout(() => {
+  console.log('查询成绩，执行了')
+  renderRankingList(500, 0)
+}, 20)
 // 调用示例
 // setTimeout(() => {
 //   console.log('保存成绩，执行了')

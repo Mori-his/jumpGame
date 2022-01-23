@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
     <title>Document</title>
     <style>
         html, body, div, span, applet, object, iframe,
@@ -69,13 +69,12 @@
       }
       #ranking-list {
         width: 100%;
-        height: 100%;
-        position: absolute;
-        left: 50%;
-        top: 0;
-        transform: translate(-50%, 0);
+        min-height: 812px;
         background-repeat: no-repeat;
         background-size: cover;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
       }
       .ranking-list-0 {
         background-image: url('./assets/images/ranking-list/bg-0.png');
@@ -85,7 +84,7 @@
       }
       .ranking-list__title {
         position: absolute;
-        top: 43px;
+        top: 5%;
         right: 4%;
       }
       .ranking-list__content {
@@ -94,10 +93,8 @@
         background-image: url('./assets/images/ranking-list/content-0.png');
         background-repeat: no-repeat;
         background-position: center;
-        position: absolute;
-        top: 230px;
-        left: 50%;
-        transform: translate(-50%, 0);
+        margin-top: 55%;
+        margin-bottom: 15%;
       }
       .ranking-list__content-0 {
         background-image: url('./assets/images/ranking-list/content-0.png');
@@ -116,6 +113,7 @@
         color: #fff;
         display: flex;
         justify-content: space-between;
+        align-items: center;
       }
       .ranking-list__content--result {
         display: flex;
@@ -164,22 +162,19 @@
       .ranking-list__button {
         width: 168px;
         height: 62px;
-        position: absolute;
-        bottom: 35px;
-        left: 50%;
-        transform: translate(-50%, 0);
+        margin-bottom: 5%;
       }
     </style>
+    <!-- <script type="text/javascript" src="./assets/javascript/rem.min.js"></script> -->
     <script type="text/javascript" src="./assets/javascript/vue.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./assets/javascript/createjs.min.js"></script>
 </head>
 <body>
-
     <canvas id="mainCanvas"></canvas>
     <div
       id="ranking-list"
-      v-if="myResult"
+      v-if="myResult && finished"
       :class="[`ranking-list-${resultType}`]"
       >
       <img src="./assets/images/ranking-list/title-0.png" class="ranking-list__title" v-if="resultType === 0"/>
