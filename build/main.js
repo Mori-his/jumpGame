@@ -5897,11 +5897,11 @@ __webpack_require__.r(__webpack_exports__);
  // ranking-list
 
  // 调用示例
-
-setTimeout(() => {
-  console.log('查询成绩，执行了');
-  (0,_utils_ranking_list__WEBPACK_IMPORTED_MODULE_6__.renderRankingList)(500, 0);
-}, 20); // 调用示例
+// setTimeout(() => {
+//   console.log('查询成绩，执行了')
+//   renderRankingList(500, 0)
+// }, 20)
+// 调用示例
 // setTimeout(() => {
 //   console.log('保存成绩，执行了')
 //   save(parseInt(475 * (Math.random() + 0)))
