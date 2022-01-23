@@ -350,4 +350,19 @@ export default [
         src: require('/src/assets/sound/BGM.mp3').default,
         type: createjs.Types.SOUND
     },
+    {
+        id: 'boyJumpMP3',
+        src: require('/src/assets/sound/boyjump.mp3').default,
+        type: createjs.Types.SOUND
+    },
+    {
+        id: 'girlJumpMP3',
+        src: require('/src/assets/sound/girljump.mp3').default,
+        type: createjs.Types.SOUND
+    },
+    {
+        id: 'speedupMP3',
+        src: require('/src/assets/sound/speedup.mp3').default,
+        type: createjs.Types.SOUND
+    },
 ]

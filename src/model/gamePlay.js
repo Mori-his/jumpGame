@@ -26,7 +26,10 @@ export default class GamePlay extends EventEmitter {
     rollCount = 1;
     leftKeyDown = false;
     rightKeyDown = false;
-    soundId = 'BGMMP3'
+    soundId = 'BGMMP3';
+    boyJumpId = 'boyJumpMP3';
+    girlJumpId = 'girlJumpMP3';
+    speedupId = 'speedupMP3';
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
@@ -51,7 +54,7 @@ export default class GamePlay extends EventEmitter {
                 break;
         }
     }
-    keyup() {
+    keyup(event) {
         switch(event.key) {
             case ARROW_LEFT:
                 this.leftKeyDown = false;
@@ -93,13 +96,12 @@ export default class GamePlay extends EventEmitter {
             })
         }
 
-        moveX += offsetX;
         if (moveX < minX) {
             moveX = minX;
         } else if (moveX > maxX) {
             moveX = maxX;
         }
-        this.moveRoleX();
+        this.moveRoleX(moveX + offsetX);
     }
 
     tickerTick(event) {
@@ -434,6 +436,9 @@ export default class GamePlay extends EventEmitter {
         this.countdown();
         this.jumpRole(
            this.jumpRoleY - this.renderHeight * 3.3,
+           this.jumpRoleX,
+           800,
+           true
         )
     }
     bindEvents() {
@@ -463,11 +468,20 @@ export default class GamePlay extends EventEmitter {
     jumpRole(
         y = this.jumpRoleY,
         x = this.role.x,
-        time = 800
+        time = 800,
+        first = false
     ) {
         this.rise = true
         this.jumpRoleY = y;
         this.role.image = this.roleFastRight;
+        if (!first) {
+            createjs.Sound.play(
+                this.selectRoleType === 0 ? this.boyJumpId : this.girlJumpId,
+                {
+                    volume: 1
+                }
+            );
+        }
         const roleTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
@@ -569,6 +583,9 @@ export default class GamePlay extends EventEmitter {
 
                     if (this.currBatterNum >= 4) {
                         this.role.image = this.roleFastRight;
+                        createjs.Sound.play(this.speedupId, {
+                            volume: 1
+                        });
                         this.jumpRole(
                             this.role.y - this.renderHeight * 15,
                             this.role.x,
