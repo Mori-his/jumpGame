@@ -2526,7 +2526,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     this.role.x = (this.stage.canvas.width - this.role.image.width) / 2;
     this.jumpRoleX = this.role.x;
     this.jumpRoleY = this.role.y;
-    this.role.scale = 0.5;
+    this.role.scale = 0.8;
     this.jumpContainer.addChild(this.role);
     this.stage.update();
   }
@@ -2770,7 +2770,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   moveRoleX(x = this.role.x) {
     createjs.Tween.get(this.role).to({
       x
-    }, 600, createjs.Ease.linear);
+    }, 350, createjs.Ease.linear);
   }
 
   speedRole() {
@@ -2839,28 +2839,37 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
 
         if (objects.length > 0) {
           if (objects[0].__type === 'time') {
-            this.currTime += this.addOvertime;
+            // 如果是加时跳台
+            this.currTime += this.addOvertime; // 加时文案附加到舞台
+
             this.stage.addChild(this.overtimeBitmap);
-            this.overtimeBitmap.alpha = 1;
+            this.overtimeBitmap.alpha = 1; // 执行加时动画
+
             createjs.Tween.get(this.overtimeBitmap).to({
               y: -this.overtimeBitmap.image.height,
               alpha: 0
             }, 2000, createjs.Ease.quadIn).call(() => {
               this.stage.removeChild(this.overtimeBitmap);
             });
-          }
+          } // 执行跳台消失动画
+
 
           createjs.Tween.get(objects[0]).to({
-            alpha: 0
+            alpha: 0,
+            scaleY: 0
           }, 300, createjs.Ease.linear).call(() => {
             // 执行完渐变动画后删除次Object
             this.rollContainer.removeChild(objects[0]);
-          });
+          }); // TODO  可以用方法包裹下
+          // 获取当前跳台名称
+
           const currBitmapName = objects[0]['@@name'];
 
           if (this.currBatterType === null) {
+            // 如果当前没有连击跳台
             this.currBatterType = currBitmapName;
           } else if (this.currBatterType === currBitmapName || objects[0].__type === 'time') {
+            // 如果当前命中跳台和上次一样 或者是加时跳台
             this.currBatterNum++;
           } else {
             this.currBatterNum = 1;
