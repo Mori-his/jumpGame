@@ -2354,6 +2354,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   boyJumpId = 'boyJumpMP3';
   girlJumpId = 'girlJumpMP3';
   speedupId = 'speedupMP3';
+  addOvertime = 15;
 
   constructor(stage, options = {}) {
     super();
@@ -2544,7 +2545,12 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     this.rollContainer.y = -(this.rollBg.image.height * this.scaleX - this.stage.canvas.height);
     this.computedGrid();
     this.renderJump(this.rollBg.image.height * this.scaleX - this.renderHeight);
-    this.backgroundContainer.addChild(this.rollBg); // 绘制背景以及跳台容器
+    this.backgroundContainer.addChild(this.rollBg); // 加时初始化
+
+    this.overtimeBitmap = new createjs.Bitmap(loader.getResult('overtime'));
+    this.overtimeBitmap.scale = 0.5;
+    this.overtimeBitmap.x = (this.stage.canvas.width - this.overtimeBitmap.image.width * 0.5) / 2;
+    this.overtimeBitmap.y = (this.stage.canvas.height - this.overtimeBitmap.image.height * 0.5) / 2; // 绘制背景以及跳台容器
 
     this.rollContainer.addChild(this.backgroundContainer, this.jumpContainer); // 给滚动容器合固定容器组合
 
@@ -2735,8 +2741,15 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       loop: -1
     });
     this.bindEvents();
-    this.countdown();
-    this.jumpRole(this.jumpRoleY - this.renderHeight * 3.3, this.jumpRoleX, 800, true);
+    this.countdown(); // this.jumpRole(
+    //    this.jumpRoleY - this.renderHeight * 3.3,
+    //    this.jumpRoleX,
+    //    800,
+    //    true
+    // )
+    // 起始加速  送150米
+
+    this.speedRole();
   }
 
   bindEvents() {
@@ -2758,6 +2771,14 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     createjs.Tween.get(this.role).to({
       x
     }, 600, createjs.Ease.linear);
+  }
+
+  speedRole() {
+    this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000).call(() => {
+      clearTimeout(this.batterEffectTimer);
+      this.removeBatterContainer();
+    });
+    this.moveBackground(this.rollContainer.y + this.renderHeight * 15, 2500);
   }
 
   jumpRole(y = this.jumpRoleY, x = this.role.x, time = 800, first = false) {
@@ -2818,7 +2839,15 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
 
         if (objects.length > 0) {
           if (objects[0].__type === 'time') {
-            this.currTime += 10;
+            this.currTime += this.addOvertime;
+            this.stage.addChild(this.overtimeBitmap);
+            this.overtimeBitmap.alpha = 1;
+            createjs.Tween.get(this.overtimeBitmap).to({
+              y: -this.overtimeBitmap.image.height,
+              alpha: 0
+            }, 2000, createjs.Ease.quadIn).call(() => {
+              this.stage.removeChild(this.overtimeBitmap);
+            });
           }
 
           createjs.Tween.get(objects[0]).to({
@@ -2867,10 +2896,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
             createjs.Sound.play(this.speedupId, {
               volume: 1
             });
-            this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000).call(() => {
-              clearTimeout(this.batterEffectTimer);
-              this.removeBatterContainer();
-            }); // 金句动画
+            this.speedRole(); // 金句动画
 
             this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
             this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
@@ -2882,7 +2908,6 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
             }, 2000, createjs.Ease.quadIn).call(() => {
               this.stage.removeChild(this.speedQuotes);
             });
-            this.moveBackground(this.rollContainer.y + this.renderHeight * 15, 3000);
             this.currBatterNum = 0;
           } else {
             this.jumpRole(this.role.y - this.renderHeight * 3.3, this.role.x, 1100);
@@ -3376,6 +3401,10 @@ __webpack_require__.r(__webpack_exports__);
 }, {
   id: 'roleFemaleRight',
   src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/role/role_female_right.png */ "./src/assets/images/gamePlay/role/role_female_right.png")["default"]),
+  type: createjs.Types.IMAGE
+}, {
+  id: 'overtime',
+  src: (__webpack_require__(/*! ../../src/assets/images/gamePlay/overtime.png */ "./src/assets/images/gamePlay/overtime.png")["default"]),
   type: createjs.Types.IMAGE
 }, {
   id: 'BGMMP3',
@@ -5411,6 +5440,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "1b8d63ca680ec0155b17a1aee4a0397f.png");
+
+/***/ }),
+
+/***/ "./src/assets/images/gamePlay/overtime.png":
+/*!*************************************************!*\
+  !*** ./src/assets/images/gamePlay/overtime.png ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "e9a532f00d96a88f9a6d62ffc7ef9cea.png");
 
 /***/ }),
 
