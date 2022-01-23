@@ -30,6 +30,7 @@ export default class GamePlay extends EventEmitter {
     boyJumpId = 'boyJumpMP3';
     girlJumpId = 'girlJumpMP3';
     speedupId = 'speedupMP3';
+    addOvertime = 15;
     constructor(stage, options = {}) {
         super();
         this.stage = stage;
@@ -209,6 +210,11 @@ export default class GamePlay extends EventEmitter {
 
         this.backgroundContainer.addChild(this.rollBg);
 
+        // 加时初始化
+        this.overtimeBitmap = new createjs.Bitmap(loader.getResult('overtime'));
+        this.overtimeBitmap.scale = 0.5;
+        this.overtimeBitmap.x = (this.stage.canvas.width - this.overtimeBitmap.image.width * 0.5) / 2;
+        this.overtimeBitmap.y = (this.stage.canvas.height - this.overtimeBitmap.image.height * 0.5) / 2;
         // 绘制背景以及跳台容器
         this.rollContainer.addChild(
             this.backgroundContainer,
@@ -434,12 +440,14 @@ export default class GamePlay extends EventEmitter {
         createjs.Sound.play(this.soundId, {loop: -1});
         this.bindEvents();
         this.countdown();
-        this.jumpRole(
-           this.jumpRoleY - this.renderHeight * 3.3,
-           this.jumpRoleX,
-           800,
-           true
-        )
+        // this.jumpRole(
+        //    this.jumpRoleY - this.renderHeight * 3.3,
+        //    this.jumpRoleX,
+        //    800,
+        //    true
+        // )
+        // 起始加速  送150米
+        this.speedRole();
     }
     bindEvents() {
 
@@ -463,6 +471,22 @@ export default class GamePlay extends EventEmitter {
             .to({
                 x,
             }, 600, createjs.Ease.linear);
+    }
+
+    speedRole() {
+        this.jumpRole(
+            this.role.y - this.renderHeight * 15,
+            this.role.x,
+            3000
+        ).call(() => {
+            clearTimeout(this.batterEffectTimer);
+            this.removeBatterContainer();
+        });
+        
+        this.moveBackground(
+            this.rollContainer.y + this.renderHeight * 15,
+            2500
+        )
     }
 
     jumpRole(
@@ -531,7 +555,16 @@ export default class GamePlay extends EventEmitter {
                 objects = objects.filter((object) => object.name === 'jump')
                 if (objects.length > 0) {
                     if (objects[0].__type === 'time') {
-                        this.currTime += 10;
+                        this.currTime += this.addOvertime;
+                        this.stage.addChild(this.overtimeBitmap);
+                        this.overtimeBitmap.alpha = 1;
+                        createjs.Tween.get(this.overtimeBitmap)
+                            .to({
+                                y: -this.overtimeBitmap.image.height,
+                                alpha: 0
+                            }, 2000, createjs.Ease.quadIn).call(() => {
+                                this.stage.removeChild(this.overtimeBitmap);
+                            });
                     }
                     createjs.Tween.get(objects[0]).to({
                         alpha: 0
@@ -586,14 +619,7 @@ export default class GamePlay extends EventEmitter {
                         createjs.Sound.play(this.speedupId, {
                             volume: 1
                         });
-                        this.jumpRole(
-                            this.role.y - this.renderHeight * 15,
-                            this.role.x,
-                            3000
-                        ).call(() => {
-                            clearTimeout(this.batterEffectTimer);
-                            this.removeBatterContainer();
-                        });
+                        this.speedRole();
                         // 金句动画
                         this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
                         this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
@@ -606,10 +632,6 @@ export default class GamePlay extends EventEmitter {
                             }, 2000, createjs.Ease.quadIn).call(() => {
                                 this.stage.removeChild(this.speedQuotes);
                             });
-                        this.moveBackground(
-                            this.rollContainer.y + this.renderHeight * 15,
-                            3000
-                        )
                         this.currBatterNum = 0;
                     } else {
                         this.jumpRole(

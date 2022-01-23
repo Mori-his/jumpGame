@@ -346,6 +346,11 @@ export default [
         type: createjs.Types.IMAGE
     },
     {
+        id: 'overtime',
+        src: require('/src/assets/images/gamePlay/overtime.png').default,
+        type: createjs.Types.IMAGE
+    },
+    {
         id: 'BGMMP3',
         src: require('/src/assets/sound/BGM.mp3').default,
         type: createjs.Types.SOUND
