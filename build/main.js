@@ -2749,7 +2749,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     // )
     // 起始加速  送150米
 
-    this.speedRole();
+    this.speedRole(false);
   }
 
   bindEvents() {
@@ -2773,8 +2773,8 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     }, 350, createjs.Ease.linear);
   }
 
-  speedRole() {
-    this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000).call(() => {
+  speedRole(first = false) {
+    this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000, first).call(() => {
       clearTimeout(this.batterEffectTimer);
       this.removeBatterContainer();
     });
