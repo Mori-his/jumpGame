@@ -447,7 +447,7 @@ export default class GamePlay extends EventEmitter {
         //    true
         // )
         // 起始加速  送150米
-        this.speedRole();
+        this.speedRole(false);
     }
     bindEvents() {
 
@@ -473,11 +473,12 @@ export default class GamePlay extends EventEmitter {
             }, 350, createjs.Ease.linear);
     }
 
-    speedRole() {
+    speedRole(first = false) {
         this.jumpRole(
             this.role.y - this.renderHeight * 15,
             this.role.x,
-            3000
+            3000,
+            first
         ).call(() => {
             clearTimeout(this.batterEffectTimer);
             this.removeBatterContainer();
