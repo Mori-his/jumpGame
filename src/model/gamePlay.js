@@ -447,7 +447,7 @@ export default class GamePlay extends EventEmitter {
         //    true
         // )
         // 起始加速  送150米
-        this.speedRole(false);
+        this.speedRole(true);
     }
     bindEvents() {
 
@@ -474,6 +474,22 @@ export default class GamePlay extends EventEmitter {
     }
 
     speedRole(first = false) {
+        createjs.Sound.play(this.speedupId, {
+            volume: 1
+        });
+        this.role.image = this.roleFastRight;
+        // 金句动画
+        this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
+        this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
+        this.speedQuotes.alpha = 1;
+        this.stage.addChild(this.speedQuotes);
+        createjs.Tween.get(this.speedQuotes)
+            .to({
+                y: -this.speedQuotes.image.height,
+                alpha: 0
+            }, 2000, createjs.Ease.quadIn).call(() => {
+                this.stage.removeChild(this.speedQuotes);
+            });
         this.jumpRole(
             this.role.y - this.renderHeight * 15,
             this.role.x,
@@ -483,11 +499,12 @@ export default class GamePlay extends EventEmitter {
             clearTimeout(this.batterEffectTimer);
             this.removeBatterContainer();
         });
-        
+                
         this.moveBackground(
             this.rollContainer.y + this.renderHeight * 15,
             2300
-        )
+        );
+        this.currBatterNum = 0;
     }
 
     jumpRole(
@@ -624,24 +641,8 @@ export default class GamePlay extends EventEmitter {
 
 
                     if (this.currBatterNum >= 4) {
-                        this.role.image = this.roleFastRight;
-                        createjs.Sound.play(this.speedupId, {
-                            volume: 1
-                        });
                         this.speedRole();
-                        // 金句动画
-                        this.speedQuotes.x = (this.stage.canvas.width - this.speedQuotes.image.width) / 2;
-                        this.speedQuotes.y = (this.stage.canvas.height - this.speedQuotes.image.height) / 2;
-                        this.speedQuotes.alpha = 1;
-                        this.stage.addChild(this.speedQuotes);
-                        createjs.Tween.get(this.speedQuotes)
-                            .to({
-                                y: -this.speedQuotes.image.height,
-                                alpha: 0
-                            }, 2000, createjs.Ease.quadIn).call(() => {
-                                this.stage.removeChild(this.speedQuotes);
-                            });
-                        this.currBatterNum = 0;
+                        
                     } else {
                         this.jumpRole(
                             this.role.y - this.renderHeight * 3.3,
