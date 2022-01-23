@@ -2351,6 +2351,9 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
   leftKeyDown = false;
   rightKeyDown = false;
   soundId = 'BGMMP3';
+  boyJumpId = 'boyJumpMP3';
+  girlJumpId = 'girlJumpMP3';
+  speedupId = 'speedupMP3';
 
   constructor(stage, options = {}) {
     super();
@@ -2378,7 +2381,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     }
   }
 
-  keyup() {
+  keyup(event) {
     switch (event.key) {
       case ARROW_LEFT:
         this.leftKeyDown = false;
@@ -2426,15 +2429,13 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
       });
     }
 
-    moveX += offsetX;
-
     if (moveX < minX) {
       moveX = minX;
     } else if (moveX > maxX) {
       moveX = maxX;
     }
 
-    this.moveRoleX();
+    this.moveRoleX(moveX + offsetX);
   }
 
   tickerTick(event) {
@@ -2735,7 +2736,7 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     });
     this.bindEvents();
     this.countdown();
-    this.jumpRole(this.jumpRoleY - this.renderHeight * 3.3);
+    this.jumpRole(this.jumpRoleY - this.renderHeight * 3.3, this.jumpRoleX, 800, true);
   }
 
   bindEvents() {
@@ -2759,10 +2760,17 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
     }, 600, createjs.Ease.linear);
   }
 
-  jumpRole(y = this.jumpRoleY, x = this.role.x, time = 800) {
+  jumpRole(y = this.jumpRoleY, x = this.role.x, time = 800, first = false) {
     this.rise = true;
     this.jumpRoleY = y;
     this.role.image = this.roleFastRight;
+
+    if (!first) {
+      createjs.Sound.play(this.selectRoleType === 0 ? this.boyJumpId : this.girlJumpId, {
+        volume: 1
+      });
+    }
+
     const roleTween = createjs.Tween.get(this.role, {
       override: true
     }).to({
@@ -2856,6 +2864,9 @@ class GamePlay extends events__WEBPACK_IMPORTED_MODULE_0__.EventEmitter {
 
           if (this.currBatterNum >= 4) {
             this.role.image = this.roleFastRight;
+            createjs.Sound.play(this.speedupId, {
+              volume: 1
+            });
             this.jumpRole(this.role.y - this.renderHeight * 15, this.role.x, 3000).call(() => {
               clearTimeout(this.batterEffectTimer);
               this.removeBatterContainer();
@@ -3369,6 +3380,18 @@ __webpack_require__.r(__webpack_exports__);
 }, {
   id: 'BGMMP3',
   src: (__webpack_require__(/*! ../../src/assets/sound/BGM.mp3 */ "./src/assets/sound/BGM.mp3")["default"]),
+  type: createjs.Types.SOUND
+}, {
+  id: 'boyJumpMP3',
+  src: (__webpack_require__(/*! ../../src/assets/sound/boyjump.mp3 */ "./src/assets/sound/boyjump.mp3")["default"]),
+  type: createjs.Types.SOUND
+}, {
+  id: 'girlJumpMP3',
+  src: (__webpack_require__(/*! ../../src/assets/sound/girljump.mp3 */ "./src/assets/sound/girljump.mp3")["default"]),
+  type: createjs.Types.SOUND
+}, {
+  id: 'speedupMP3',
+  src: (__webpack_require__(/*! ../../src/assets/sound/speedup.mp3 */ "./src/assets/sound/speedup.mp3")["default"]),
   type: createjs.Types.SOUND
 }]);
 
@@ -4593,6 +4616,51 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "src/assets/sound/BGM.mp3");
+
+/***/ }),
+
+/***/ "./src/assets/sound/boyjump.mp3":
+/*!**************************************!*\
+  !*** ./src/assets/sound/boyjump.mp3 ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "src/assets/sound/boyjump.mp3");
+
+/***/ }),
+
+/***/ "./src/assets/sound/girljump.mp3":
+/*!***************************************!*\
+  !*** ./src/assets/sound/girljump.mp3 ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "src/assets/sound/girljump.mp3");
+
+/***/ }),
+
+/***/ "./src/assets/sound/speedup.mp3":
+/*!**************************************!*\
+  !*** ./src/assets/sound/speedup.mp3 ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "src/assets/sound/speedup.mp3");
 
 /***/ }),
 
