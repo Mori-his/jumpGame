@@ -41,7 +41,6 @@ window.addEventListener('load', function() {
         gameLoading = new GameLoading(stage);
         gameLoading.on('loaded', () => {
             const noviceTips = window.localStorage.getItem('noviceTips')
-
             gamePlay = new GamePlay(stage, {
               noviceTips: noviceTips !== 'false'
             });

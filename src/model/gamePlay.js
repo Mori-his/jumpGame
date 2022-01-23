@@ -80,24 +80,26 @@ export default class GamePlay extends EventEmitter {
         let moveX = touch.clientX - x;
         const minX = this.padding / 2;
         const maxX = this.stage.canvas.width - minX;
-        if (moveX < minX) {
-            moveX = minX;
-        } else if (moveX > maxX) {
-            moveX = maxX;
-        }
         let offsetX = this.renderWidth / 2;
         clearTimeout(this.moveXTimer);
         if (this.role.x > moveX) {
             offsetX = -offsetX;
             this.moveXTimer = setTimeout(() => {
-                this.role.image = this.rise ? this.roleLeft : this.roleFastLeft;
+                this.role.image = this.rise ? this.roleFastLeft : this.roleLeft;
             }, 100)
         } else {
             this.moveXTimer = setTimeout(() => {
-                this.role.image = this.rise ? this.roleRight : this.roleFastRight;
+                this.role.image = this.rise ? this.roleFastRight : this.roleRight;
             })
         }
-        this.moveRoleX(moveX + offsetX);
+
+        moveX += offsetX;
+        if (moveX < minX) {
+            moveX = minX;
+        } else if (moveX > maxX) {
+            moveX = maxX;
+        }
+        this.moveRoleX();
     }
 
     tickerTick(event) {
@@ -245,7 +247,7 @@ export default class GamePlay extends EventEmitter {
         const { h } = this.distanceBg.graphics.command;
         this.disanceText.set({
             x: 110,
-            y: this.distanceBg.y + (h - textHeihgt) / 2
+            y: this.distanceBg.y + (h - textHeihgt) / 2 - 5
         });
 
         const batterBg = new createjs.Bitmap(loader.getResult('overtime_bg'));
@@ -465,7 +467,7 @@ export default class GamePlay extends EventEmitter {
     ) {
         this.rise = true
         this.jumpRoleY = y;
-        this.role.image = this.roleRight;
+        this.role.image = this.roleFastRight;
         const roleTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
@@ -487,7 +489,7 @@ export default class GamePlay extends EventEmitter {
         time = 1500
     ) {
         this.jumpRoleY = y;
-        this.role.image = this.roleFastRight;
+        this.role.image = this.roleRight;
         const fallTween = createjs.Tween.get(this.role, { override: true })
             .to({
                 y,
