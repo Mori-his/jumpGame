@@ -4012,6 +4012,7 @@ const vm = new Vue({
       this.myResult = result;
       this.resultType = type;
       document.querySelector('#mainCanvas').style = "display: none;";
+      document.querySelector('body').style = "overflow: auto;";
       axios__WEBPACK_IMPORTED_MODULE_0___default().request({
         url: 'http://13.232.169.180/api/search/ranking',
         method: 'GET'

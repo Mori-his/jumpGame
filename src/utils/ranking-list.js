@@ -37,6 +37,7 @@ const vm = new Vue({
       this.resultType = type
 
       document.querySelector('#mainCanvas').style = "display: none;"
+      document.querySelector('body').style = "overflow: auto;"
 
       axios.request({
         url: 'http://13.232.169.180/api/search/ranking',
